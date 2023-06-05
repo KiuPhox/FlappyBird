@@ -8,16 +8,20 @@ export class GameObject {
         this.objectImage = new Image()
     }
 
+    get pos(): Vector {
+        return this.position
+    }
+
+    set pos(pos: Vector) {
+        this.position = pos
+    }
+
     get width(): number {
         return this.image.width
     }
 
     get height(): number {
         return this.image.height
-    }
-
-    get pos(): Vector {
-        return this.position
     }
 
     get image(): HTMLImageElement {

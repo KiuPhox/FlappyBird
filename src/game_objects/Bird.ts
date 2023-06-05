@@ -6,7 +6,7 @@ export class Bird extends GameObject {
 
     constructor() {
         super()
-        this.speed = { x: 0, y: 1 }
+        this.speed = { x: 0, y: 0 }
         this.position = { x: 0, y: 0 }
         this.objectImage.src = "assets/images/bird.png"
     }
