@@ -4,7 +4,7 @@ export class CanvasView {
     canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D | null
 
-    draw(object: GameObject): void {
+    public draw(object: GameObject): void {
         this.context?.drawImage(object.image, object.pos.x, object.pos.y, object.width, object.height)
     }
 
@@ -15,7 +15,7 @@ export class CanvasView {
         this.context = this.canvas.getContext('2d')
     }
 
-    clear(): void {
+    public clear(): void {
         this.context?.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }
 }

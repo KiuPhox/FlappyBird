@@ -1,14 +1,14 @@
 import { Vector } from "../types/general"
 import { GameObject } from "./GameObject"
 
-export class Background extends GameObject {
+export class Ground extends GameObject {
     private velocity: Vector
 
     constructor() {
         super()
-        this.velocity = { x: -0.5, y: 0 }
+        this.velocity = { x: -1, y: 0 }
         this.position = { x: 0, y: 0 }
-        this.objectImage.src = "assets/images/background-day.png"
+        this.objectImage.src = "assets/images/base.png"
     }
 
     public move(): void {
