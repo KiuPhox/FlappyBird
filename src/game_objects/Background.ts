@@ -5,9 +5,8 @@ export class Background extends GameObject {
     private velocity: Vector
 
     constructor() {
-        super()
+        super({ x: 0, y: 0 })
         this.velocity = { x: -0.5, y: 0 }
-        this.position = { x: 0, y: 0 }
         this.objectImage.src = "assets/images/background-day.png"
     }
 

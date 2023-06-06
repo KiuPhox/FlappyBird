@@ -1,10 +1,12 @@
 import { Vector } from "../types/general"
 
 export class GameObject {
-    protected position: Vector
+    private position: Vector
     protected objectImage: HTMLImageElement
+    protected rotation: number
 
-    constructor() {
+    constructor(position: Vector) {
+        this.position = position
         this.objectImage = new Image()
     }
 
@@ -16,15 +18,17 @@ export class GameObject {
         this.position = pos
     }
 
+    get rot(): number { return this.rotation }
+
+    get image(): HTMLImageElement {
+        return this.objectImage
+    }
+
     get width(): number {
         return this.image.width
     }
 
     get height(): number {
         return this.image.height
-    }
-
-    get image(): HTMLImageElement {
-        return this.objectImage
     }
 }

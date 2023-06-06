@@ -5,9 +5,8 @@ export class Ground extends GameObject {
     private velocity: Vector
 
     constructor() {
-        super()
+        super({ x: 0, y: 0 })
         this.velocity = { x: -1, y: 0 }
-        this.position = { x: 0, y: 0 }
         this.objectImage.src = "assets/images/base.png"
     }
 

@@ -7,9 +7,8 @@ export class Bird extends GameObject {
     private jumpStrength: number
 
     constructor() {
-        super()
+        super({ x: 0, y: 0 })
         this.velocity = { x: 0, y: 0 }
-        this.position = { x: 0, y: 0 }
         this.gravity = 0.05
         this.objectImage.src = "assets/images/bird.png"
         this.jumpStrength = 2.5
