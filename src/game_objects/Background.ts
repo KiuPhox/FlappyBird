@@ -6,7 +6,7 @@ export class Background extends GameObject {
 
     constructor() {
         super()
-        this.velocity = { x: -0.5, y: 0 }
+        this.velocity = { x: -0.2, y: 0 }
         this.objectImage.src = "assets/images/background-day.png"
     }
 

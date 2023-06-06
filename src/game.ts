@@ -2,6 +2,7 @@ import { Score } from "./Score"
 import { Background } from "./game_objects/Background"
 import { Bird } from "./game_objects/Bird"
 import { GameOver } from "./game_objects/GameOver"
+import { Ground } from "./game_objects/Ground"
 import { Message } from "./game_objects/Message"
 import { PipeSpawner } from "./game_objects/PipeSpawner"
 import { Render } from "./render"
@@ -17,6 +18,7 @@ export class Game {
     private gameState: GameState
     private gameOver: GameOver = new GameOver()
     private message: Message = new Message()
+    private ground: Ground[] = Array.from({ length: 2 }, () => new Ground())
     private static instance: Game
 
     private gameStateUpdateHandlers: GameStateUpdateHandler[] = []
@@ -53,12 +55,15 @@ export class Game {
 
         this.updateGameState('Idle')
 
-
         this.bg[1].pos = { x: this.bg[0].width, y: 0 }
+        this.ground[0].pos = { x: this.ground[0].pos.x, y: 420 }
+        this.ground[1].pos = { x: this.ground[0].width, y: 420 }
         this.gameOver.pos = { x: this.bg[0].width / 2 - this.gameOver.width / 2, y: this.bg[0].height / 2 - this.gameOver.height / 2 }
         this.message.pos = { x: this.bg[0].width / 2 - this.message.width / 2, y: this.bg[0].height / 2 - this.message.height / 2 + 50 }
 
         this.render.add(this.bird, 1)
+        this.render.add(this.ground[0], 1)
+        this.render.add(this.ground[1], 1)
         this.render.add(this.bg[0], 3)
         this.render.add(this.bg[1], 3)
 
@@ -76,13 +81,22 @@ export class Game {
         if (this.gameState == "Start" || this.gameState == "Idle") {
             this.bg[0].move()
             this.bg[1].move()
+            this.ground[0].move()
+            this.ground[1].move()
 
 
-            if (this.bg[0].pos.x + this.bg[0].width < 0) {
+            if (this.bg[0].pos.x + this.bg[0].width <= 0) {
                 const temp = this.bg[0]
                 this.bg[0] = this.bg[1]
                 this.bg[1] = temp
                 this.bg[1].pos = { x: this.bg[0].width, y: 0 }
+            }
+
+            if (this.ground[0].pos.x + this.ground[0].width <= 0) {
+                const temp = this.ground[0]
+                this.ground[0] = this.ground[1]
+                this.ground[1] = temp
+                this.ground[1].pos = { x: this.ground[0].width, y: 420 }
             }
 
         }
@@ -141,6 +155,8 @@ export class Game {
                 this.bird.pos = { x: this.bg[0].width / 2 - this.bird.width / 2, y: this.bg[0].height / 2 - this.bird.width / 2 }
                 this.bird.setVelocity({ x: 0, y: 0 })
                 this.bird.setGravity(0)
+
+                this.bird.setIsOver(false)
 
                 Score.getInstance().reset()
 

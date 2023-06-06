@@ -2,7 +2,6 @@ import { Game } from "../game"
 import { Vector } from "../types/general"
 import { GameObject } from "./GameObject"
 
-
 export class Bird extends GameObject {
     private velocity: Vector
     private gravity: number
@@ -31,7 +30,9 @@ export class Bird extends GameObject {
 
     private applyGravity(): void {
         this.velocity.y += this.gravity
-        this.rot = this.velocity.y / 4
+
+        if (!this.isOver)
+            this.rot = this.velocity.y / 4
     }
 
     private updatePosition(): void {
@@ -48,10 +49,21 @@ export class Bird extends GameObject {
     }
 
     private checkBounds(): void {
-        if (!this.isOver && this.pos.y > 500 || this.pos.y < 0) {
+
+        if (!this.isOver && this.pos.y > 400 || this.pos.y < 0) {
             this.isOver = true
+            this.pos.y = 400
             Game.getInstance().updateGameState("GameOver")
         }
+
+        if (this.pos.y > 400) {
+            this.pos.y = 400
+            //this.velocity.y = 0
+        }
+    }
+
+    public setIsOver(isOver: boolean): void {
+        this.isOver = isOver
     }
 
     public setVelocity(velocity: Vector): void {
