@@ -29,7 +29,6 @@ export class Game {
         }
         return Game.instance
     }
-
     // private ground: Ground[] = Array.from({ length: 2 }, () => new Ground())
 
     constructor() {
@@ -43,6 +42,7 @@ export class Game {
         const delta = (time - lastTime) / 1000
 
         this.update(delta)
+        this.render.render()
 
         lastTime = time
 
@@ -104,8 +104,6 @@ export class Game {
         if (this.gameState == "Start") {
             this.pipeSpawner.update(delta)
         }
-
-        this.render.render()
     }
 
     private inputHandler(event: KeyboardEvent | MouseEvent): void {

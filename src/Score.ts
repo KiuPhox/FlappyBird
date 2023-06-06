@@ -38,6 +38,8 @@ export class Score {
 
     public increaseScore(): void {
         this._score++
+        //const pointSound = new Audio('assets/audios/point.ogg')
+        //pointSound.play()
         this.display()
     }
 
