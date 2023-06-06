@@ -1,18 +1,21 @@
 import { Render } from "../render"
 import { Vector } from "../types/general"
 import { Pipe } from "./Pipe"
+import { Bird } from "./Bird"
 
 export class PipeSpawner {
     private spawnPos: Vector
     private spawnBetweenTime: number
     private spawnTimer: number
     private pipes: Pipe[]
+    private bird: Bird
 
-    constructor(spawnPos: Vector) {
+    constructor(spawnPos: Vector, bird: Bird) {
         this.spawnPos = spawnPos
         this.spawnBetweenTime = 1
         this.spawnTimer = this.spawnBetweenTime
         this.pipes = []
+        this.bird = bird
     }
 
     public update(delta: number) {
@@ -24,16 +27,17 @@ export class PipeSpawner {
 
         for (let i = 0; i < this.pipes.length; i++) {
             this.pipes[i].move()
+            if (this.pipes[i].collider(this.bird)) {
+                console.log('Game Over')
+            }
         }
     }
     private spawn() {
         const pipeUp = new Pipe({ x: this.spawnPos.x, y: this.getRandomNumber(200, 400) })
         const pipeDown = new Pipe({ x: this.spawnPos.x, y: pipeUp.pos.y - 450 })
 
-        pipeUp.setVelocity({ x: -1, y: 0 })
-        pipeDown.setVelocity({ x: -1, y: 0 })
+        pipeDown.rot = Math.PI
 
-        pipeDown.setRotation(180)
 
         this.pipes.push(pipeUp)
         this.pipes.push(pipeDown)

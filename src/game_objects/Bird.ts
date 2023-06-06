@@ -1,13 +1,14 @@
 import { Vector } from "../types/general"
 import { GameObject } from "./GameObject"
 
+
 export class Bird extends GameObject {
     private velocity: Vector
     private gravity: number
     private jumpStrength: number
 
     constructor() {
-        super({ x: 0, y: 0 })
+        super()
         this.velocity = { x: 0, y: 0 }
         this.gravity = 0.05
         this.objectImage.src = "assets/images/bird.png"

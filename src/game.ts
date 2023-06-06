@@ -11,7 +11,7 @@ class Game {
     private score: number
     private bird: Bird = new Bird()
     private bg: Background[] = Array.from({ length: 2 }, () => new Background())
-    private pipeSpawner: PipeSpawner = new PipeSpawner({ x: this.bg[0].width + 2, y: 0 })
+    private pipeSpawner: PipeSpawner = new PipeSpawner({ x: this.bg[0].width + 2, y: 0 }, this.bird)
     private render: Render = Render.getInstance()
 
     // private ground: Ground[] = Array.from({ length: 2 }, () => new Ground())
@@ -93,8 +93,12 @@ class Game {
             this.bird.jump()
         }
     }
+
+    public getBird(): Bird {
+        return this.bird
+    }
 }
 
-new Game()
+export const game = new Game()
 
 
