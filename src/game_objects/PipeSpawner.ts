@@ -30,7 +30,7 @@ export class PipeSpawner {
         }
 
         for (let i = 0; i < this.pipes.length; i++) {
-            this.pipes[i].move()
+            this.pipes[i].update(delta)
 
             if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
                 this.pipes[i].setIsCount(true)

@@ -76,13 +76,13 @@ export class Game {
     }
 
     private update(delta: number): void {
-        this.bird.move()
+        this.bird.update(delta)
 
         if (this.gameState == "Start" || this.gameState == "Idle") {
-            this.bg[0].move()
-            this.bg[1].move()
-            this.ground[0].move()
-            this.ground[1].move()
+            this.bg[0].update(delta)
+            this.bg[1].update(delta)
+            this.ground[0].update(delta)
+            this.ground[1].update(delta)
 
 
             if (this.bg[0].pos.x + this.bg[0].width <= 0) {
@@ -163,7 +163,7 @@ export class Game {
                 break
             case "Start":
                 this.render.remove(this.message)
-                this.bird.setGravity(0.05)
+                this.bird.setGravity(0.15)
                 //this.render.clear()
                 //this.start()
                 break

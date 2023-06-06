@@ -10,14 +10,14 @@ export class Pipe extends GameObject {
     constructor(position: Vector, isCount: boolean) {
         super()
         this.pos = position
-        this.velocity = { x: -1, y: 0 }
+        this.velocity = { x: -1.7, y: 0 }
         this.objectImage.src = "assets/images/pipe-green.png"
         this.isCount = isCount
     }
 
-    public move(): void {
-        this.pos.x += this.velocity.x
-        this.pos.y += this.velocity.y
+    public update(delta: number): void {
+        this.pos.x += this.velocity.x * delta * 100
+        this.pos.y += this.velocity.y * delta * 100
     }
 
     public collider(otherObject: GameObject): boolean {

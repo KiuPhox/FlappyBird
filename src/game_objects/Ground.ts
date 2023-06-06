@@ -6,12 +6,12 @@ export class Ground extends GameObject {
 
     constructor() {
         super()
-        this.velocity = { x: -1, y: 0 }
+        this.velocity = { x: -1.7, y: 0 }
         this.objectImage.src = "assets/images/base.png"
     }
 
-    public move(): void {
-        this.pos.x += this.velocity.x
-        this.pos.y += this.velocity.y
+    public update(delta: number): void {
+        this.pos.x += this.velocity.x * delta * 100
+        this.pos.y += this.velocity.y * delta * 100
     }
 }

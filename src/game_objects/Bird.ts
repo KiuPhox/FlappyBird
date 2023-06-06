@@ -8,17 +8,19 @@ export class Bird extends GameObject {
     private jumpStrength: number
 
     private isOver: boolean
+    private delta: number
 
     constructor() {
         super()
         this.velocity = { x: 0, y: 0 }
         this.gravity = 0
         this.objectImage.src = "assets/images/bird-mid.png"
-        this.jumpStrength = 2.5
+        this.jumpStrength = 4
         this.isOver = false
     }
 
-    public move(): void {
+    public update(delta: number): void {
+        this.delta = delta * 100
         this.applyGravity()
         this.updatePosition()
         this.checkBounds()
@@ -29,15 +31,15 @@ export class Bird extends GameObject {
     }
 
     private applyGravity(): void {
-        this.velocity.y += this.gravity
+        this.velocity.y += this.gravity * this.delta
 
         if (!this.isOver)
             this.rot = this.velocity.y / 4
     }
 
     private updatePosition(): void {
-        this.pos.x += this.velocity.x
-        this.pos.y += this.velocity.y
+        this.pos.x += this.velocity.x * this.delta
+        this.pos.y += this.velocity.y * this.delta
 
         if (this.velocity.y > 0.5) {
             this.image.src = 'assets/images/bird-up.png'
