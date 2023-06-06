@@ -4,11 +4,13 @@ export class GameObject {
     private position: Vector
     protected objectImage: HTMLImageElement
     private rotation: number
+    private scale: number
 
     constructor() {
         this.position = { x: 0, y: 0 }
         this.rotation = 0
         this.objectImage = new Image()
+        this.scale = 1
     }
 
     get center(): Vector {
@@ -31,6 +33,14 @@ export class GameObject {
 
     get image(): HTMLImageElement {
         return this.objectImage
+    }
+
+    get Scale(): number {
+        return this.scale
+    }
+
+    set Scale(scale: number) {
+        this.scale = scale
     }
 
     get width(): number {

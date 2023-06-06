@@ -8,12 +8,12 @@ import { PipeSpawner } from "./game_objects/PipeSpawner"
 import { Render } from "./render"
 import { GameState, GameStateUpdateHandler } from "./types/general"
 
-const FRAME_RATE = 90
+const FRAME_RATE = 120
 
 export class Game {
     private bird: Bird = new Bird()
     private bg: Background[] = Array.from({ length: 2 }, () => new Background())
-    private pipeSpawner: PipeSpawner = new PipeSpawner({ x: this.bg[0].width + 2, y: 0 }, this.bird)
+    private pipeSpawner: PipeSpawner = new PipeSpawner({ x: this.bg[0].width + 50, y: 0 }, this.bird)
     private render: Render = Render.getInstance()
     private gameState: GameState
     private gameOver: GameOver = new GameOver()
@@ -52,12 +52,8 @@ export class Game {
             this.update(deltaTime / 1000)
             this.lastFrameTime = time
             this.render.render()
-        }
-        // const time = window.performance.now()
-        // const delta = (time - lastTime) / 1000
 
-        // this.update(delta)
-        // this.render.render()
+        }
 
         window.requestAnimationFrame(() => {
             this.loop()

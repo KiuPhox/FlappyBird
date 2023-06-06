@@ -55,7 +55,7 @@ export class PipeSpawner {
 
     private spawn() {
         const pipeUp = new Pipe({ x: this.spawnPos.x, y: this.getRandomNumber(180, 380) }, true)
-        const pipeDown = new Pipe({ x: this.spawnPos.x, y: pipeUp.pos.y - 450 }, false)
+        const pipeDown = new Pipe({ x: this.spawnPos.x, y: pipeUp.pos.y - 430 }, false)
 
         pipeDown.rot = Math.PI
 

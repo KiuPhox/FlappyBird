@@ -27,7 +27,7 @@ export class CanvasView {
         this.context.save()
         this.context.translate(object.pos.x + object.width / 2, object.pos.y + object.height / 2)
         this.context.rotate(object.rot)
-        this.context.drawImage(object.image, -object.width / 2, -object.height / 2, object.width, object.height)
+        this.context.drawImage(object.image, -object.width / 2, -object.height / 2, object.width * object.Scale, object.height * object.Scale)
         this.context.restore()
     }
 

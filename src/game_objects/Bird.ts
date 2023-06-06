@@ -15,7 +15,7 @@ export class Bird extends GameObject {
         this.velocity = { x: 0, y: 0 }
         this.gravity = 0
         this.objectImage.src = "assets/images/bird-mid.png"
-        this.jumpStrength = 4
+        this.jumpStrength = 4.3
         this.isOver = false
     }
 
