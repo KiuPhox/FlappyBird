@@ -11,6 +11,10 @@ export class GameObject {
         this.objectImage = new Image()
     }
 
+    get center(): Vector {
+        return { x: this.position.x + this.objectImage.width / 2, y: this.position.y + this.objectImage.height / 2 }
+    }
+
     get pos(): Vector {
         return this.position
     }

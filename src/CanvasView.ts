@@ -1,5 +1,6 @@
 import { GameObject } from "./game_objects/GameObject"
 
+
 export class CanvasView {
     canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D | null
@@ -19,7 +20,6 @@ export class CanvasView {
 
         return CanvasView.instance
     }
-
 
     public draw(object: GameObject): void {
         if (!this.context) return

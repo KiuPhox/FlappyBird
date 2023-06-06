@@ -20,10 +20,24 @@ export class Render {
 
     public add(gameObject: GameObject, priority: number) {
         this.objectsToRender.push({ gameObject: gameObject, priority: priority })
+        this.objectsToRender.sort((a, b) => b.priority - a.priority)
+    }
+
+    public remove(gameObject: GameObject) {
+        const index = this.objectsToRender.findIndex((item) => item.gameObject === gameObject)
+        if (index !== -1) {
+            this.objectsToRender.splice(index, 1)
+        }
+        this.objectsToRender.sort((a, b) => b.priority - a.priority)
+    }
+
+    public clear() {
+        this.objectsToRender.length = 0
+        CanvasView.getInstance().clear()
     }
 
     public render(): void {
-        this.objectsToRender.sort((a, b) => b.priority - a.priority)
+        //console.log(this.objectsToRender.length)
         for (const { gameObject } of this.objectsToRender) {
             this.view.draw(gameObject)
         }
