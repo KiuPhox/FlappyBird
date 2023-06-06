@@ -8,7 +8,7 @@ import { PipeSpawner } from "./game_objects/PipeSpawner"
 import { Render } from "./render"
 import { GameState, GameStateUpdateHandler } from "./types/general"
 
-let lastTime = window.performance.now()
+const FRAME_RATE = 90
 
 export class Game {
     private bird: Bird = new Bird()
@@ -23,6 +23,10 @@ export class Game {
 
     private gameStateUpdateHandlers: GameStateUpdateHandler[] = []
 
+    private fps: number
+    private frameTime: number
+    private lastFrameTime: number
+
     public static getInstance(): Game {
         if (!Game.instance) {
             Game.instance = new Game()
@@ -32,6 +36,9 @@ export class Game {
     // private ground: Ground[] = Array.from({ length: 2 }, () => new Ground())
 
     constructor() {
+        this.fps = FRAME_RATE
+        this.frameTime = 1000 / this.fps
+        this.lastFrameTime = 0
         this.start()
         this.loop()
     }
@@ -39,12 +46,18 @@ export class Game {
     private loop() {
 
         const time = window.performance.now()
-        const delta = (time - lastTime) / 1000
+        const deltaTime = time - this.lastFrameTime
 
-        this.update(delta)
-        this.render.render()
+        if (deltaTime >= this.frameTime) {
+            this.update(deltaTime / 1000)
+            this.lastFrameTime = time
+            this.render.render()
+        }
+        // const time = window.performance.now()
+        // const delta = (time - lastTime) / 1000
 
-        lastTime = time
+        // this.update(delta)
+        // this.render.render()
 
         window.requestAnimationFrame(() => {
             this.loop()

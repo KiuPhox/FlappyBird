@@ -34,7 +34,7 @@ export class Bird extends GameObject {
         this.velocity.y += this.gravity * this.delta
 
         if (!this.isOver)
-            this.rot = this.velocity.y / 4
+            this.rot = this.velocity.y / 5
     }
 
     private updatePosition(): void {
