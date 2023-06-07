@@ -1,4 +1,5 @@
 import { Render } from "../Render"
+import { Collider } from "../components/Collider"
 import { Physic } from "../components/Physic"
 import { Sprite } from "../components/Sprite"
 import { Game } from "../game"
@@ -10,6 +11,7 @@ export class Bird extends GameObject {
     private isOver: boolean
     private physic: Physic
     private sprite: Sprite
+    private collider: Collider
 
     constructor() {
         super()
@@ -17,10 +19,13 @@ export class Bird extends GameObject {
         this.isOver = false
         this.physic = new Physic(this, 0)
         this.sprite = new Sprite(this, 1)
+        this.collider = new Collider(this)
         this.sprite.setSprite("assets/images/bird-mid.png")
 
         this.addComponent(this.physic)
         this.addComponent(this.sprite)
+        this.addComponent(this.collider)
+
 
         Render.getInstance().add(this)
     }

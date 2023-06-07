@@ -3,6 +3,8 @@ import { Vector2 } from "../utils/Vector2"
 import { Pipe } from "./Pipe"
 import { Bird } from "./Bird"
 import { Utils } from "../utils/Utils"
+import { Collider } from "../components/Collider"
+import { Game } from "../game"
 
 export class PipeSpawner {
     private spawnPos: Vector2
@@ -10,7 +12,7 @@ export class PipeSpawner {
     private spawnTimer: number
     private pipes: Pipe[]
     private bird: Bird
-
+    private birdCollider: Collider
 
     constructor(spawnPos: Vector2, bird: Bird) {
         this.spawnPos = spawnPos
@@ -18,6 +20,7 @@ export class PipeSpawner {
         this.spawnTimer = this.spawnBetweenTime
         this.pipes = []
         this.bird = bird
+        this.birdCollider = bird.getComponent('Collider') as Collider
     }
 
     public update(delta: number) {
@@ -34,6 +37,12 @@ export class PipeSpawner {
             //     this.pipes[i].setIsCount(true)
             //     ScoreManager.Instance().increaseScore()
             // }
+
+
+            if ((this.pipes[i].getComponent('Collider') as Collider).isTouch(this.birdCollider)) {
+                Game.Instance().updateGameState("GameOver")
+                console.log('Game Over')
+            }
 
             // if (this.pipes[i].collider(this.bird)) {
 

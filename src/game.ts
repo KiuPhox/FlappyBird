@@ -56,7 +56,7 @@ export class Game {
         this.render = Render.getInstance()
         this.gameOver = new GameOver()
         this.message = new Message()
-        this.ground = Array.from({ length: 2 }, () => new Ground())
+        this.ground = Array.from({ length: 2 }, () => new Ground(this.bird))
 
         this.start()
         this.loop()

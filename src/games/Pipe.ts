@@ -1,4 +1,5 @@
 import { Render } from "../Render"
+import { Collider } from "../components/Collider"
 import { Sprite } from "../components/Sprite"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
@@ -8,14 +9,20 @@ export class Pipe extends GameObject {
     private velocity: Vector2
     private isCount: boolean
     private sprite: Sprite
+    private collider: Collider
 
     constructor(position: Vector2, isCount: boolean) {
         super()
         this.transform.position = position
         this.velocity = new Vector2(-1.7, 0)
+
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite('assets/images/pipe-green.png')
         this.addComponent(this.sprite)
+
+        this.collider = new Collider(this)
+        this.addComponent(this.collider)
+
         this.isCount = isCount
         Render.getInstance().add(this)
     }
