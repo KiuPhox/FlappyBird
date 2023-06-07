@@ -1,3 +1,4 @@
+import { Sprite } from "./components/Sprite"
 import { GameObject } from "./games/GameObject"
 
 
@@ -8,7 +9,7 @@ export class CanvasView {
 
     constructor(canvasName: string) {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvasName)
-        this.canvas.width = 300
+        this.canvas.width = 288
         this.canvas.height = 500
         this.context = this.canvas.getContext('2d')
     }
@@ -21,13 +22,15 @@ export class CanvasView {
         return CanvasView.instance
     }
 
-    public draw(object: GameObject): void {
+    public draw(gameObject: GameObject): void {
         if (!this.context) return
 
+        const sprite = gameObject.getComponent('Sprite') as Sprite
+
         this.context.save()
-        this.context.translate(object.transform.position.x + object.width / 2, object.transform.position.y + object.height / 2)
-        this.context.rotate(object.transform.rotation)
-        this.context.drawImage(object.image, -object.width / 2, -object.height / 2, object.width * object.transform.scale, object.height * object.transform.scale)
+        this.context.translate(gameObject.transform.position.x + sprite.width / 2, gameObject.transform.position.y + sprite.height / 2)
+        this.context.rotate(gameObject.transform.rotation)
+        this.context.drawImage(sprite.image, -sprite.width / 2, -sprite.height / 2, sprite.width * gameObject.transform.scale, sprite.height * gameObject.transform.scale)
         this.context.restore()
     }
 

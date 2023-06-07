@@ -35,6 +35,6 @@ export class Physic extends Component {
             this._velocity = this._velocity.add(new Vector2(0, this._gravityScale).mul(delta * 100))
         }
 
-        this.gameObject.transform.position = this.gameObject.transform.position.add(this._velocity.mul(delta * 100))
+        this._gameObject.transform.position = this._gameObject.transform.position.add(this._velocity.mul(delta * 100))
     }
 }

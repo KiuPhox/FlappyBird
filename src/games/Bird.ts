@@ -1,4 +1,6 @@
+import { Render } from "../Render"
 import { Physic } from "../components/Physic"
+import { Sprite } from "../components/Sprite"
 import { Game } from "../game"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
@@ -7,14 +9,20 @@ export class Bird extends GameObject {
     private jumpStrength: number
     private isOver: boolean
     private physic: Physic
+    private sprite: Sprite
 
     constructor() {
         super()
-        this._image.src = "assets/images/bird-mid.png"
         this.jumpStrength = 4
         this.isOver = false
         this.physic = new Physic(this, 0)
+        this.sprite = new Sprite(this, 1)
+        this.sprite.setSprite("assets/images/bird-mid.png")
+
         this.addComponent(this.physic)
+        this.addComponent(this.sprite)
+
+        Render.getInstance().add(this)
     }
 
     public update(delta: number): void {

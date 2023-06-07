@@ -2,10 +2,14 @@ import { GameObject } from "../games/GameObject"
 
 export class Component {
     protected _name: string
-    protected gameObject: GameObject
+    protected _gameObject: GameObject
 
     constructor(gameObject: GameObject) {
-        this.gameObject = gameObject
+        this._gameObject = gameObject
+    }
+
+    get gameObject(): GameObject {
+        return this._gameObject
     }
 
     get name(): string {

@@ -10,7 +10,6 @@ export type Transform = {
 
 export class GameObject {
     private _transform: Transform
-    protected _image: HTMLImageElement
     private components: { [key: string]: Component }
 
     constructor() {
@@ -21,20 +20,13 @@ export class GameObject {
         }
 
         this.components = {}
-
-        this._image = new Image()
     }
 
     get transform(): Transform { return this._transform }
 
-    get center(): Vector2 {
-        return new Vector2(this.transform.position.x + this._image.width / 2, this.transform.position.y + this._image.height / 2)
-    }
-    get image(): HTMLImageElement { return this._image }
-
-    get width(): number { return this.image.width }
-
-    get height(): number { return this.image.height }
+    // get center(): Vector2 {
+    //     return new Vector2(this.transform.position.x + this._image.width / 2, this.transform.position.y + this._image.height / 2)
+    // }
 
     public update(delta: number): void {
         for (const key in this.components) {
@@ -42,14 +34,14 @@ export class GameObject {
         }
     }
 
-    public collider(otherObject: GameObject): boolean {
-        return (
-            this.transform.position.x < otherObject.transform.position.x + otherObject.width &&
-            this.transform.position.x + this.width > otherObject.transform.position.x &&
-            this.transform.position.y < otherObject.transform.position.y + otherObject.height &&
-            this.transform.position.y + this.height > otherObject.transform.position.y
-        )
-    }
+    // public collider(otherObject: GameObject): boolean {
+    //     return (
+    //         this.transform.position.x < otherObject.transform.position.x + otherObject.width &&
+    //         this.transform.position.x + this.width > otherObject.transform.position.x &&
+    //         this.transform.position.y < otherObject.transform.position.y + otherObject.height &&
+    //         this.transform.position.y + this.height > otherObject.transform.position.y
+    //     )
+    // }
 
     public addComponent(component: Component): void {
         this.components[component.name] = component

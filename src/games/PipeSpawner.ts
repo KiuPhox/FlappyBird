@@ -2,8 +2,6 @@ import { Render } from "../Render"
 import { Vector2 } from "../utils/Vector2"
 import { Pipe } from "./Pipe"
 import { Bird } from "./Bird"
-import { Game } from "../game"
-import { ScoreManager } from "../ScoreManager"
 import { Utils } from "../utils/Utils"
 
 export class PipeSpawner {
@@ -20,7 +18,6 @@ export class PipeSpawner {
         this.spawnTimer = this.spawnBetweenTime
         this.pipes = []
         this.bird = bird
-
     }
 
     public update(delta: number) {
@@ -33,16 +30,16 @@ export class PipeSpawner {
         for (let i = 0; i < this.pipes.length; i++) {
             this.pipes[i].update(delta)
 
-            if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
-                this.pipes[i].setIsCount(true)
-                ScoreManager.Instance().increaseScore()
-            }
+            // if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
+            //     this.pipes[i].setIsCount(true)
+            //     ScoreManager.Instance().increaseScore()
+            // }
 
-            if (this.pipes[i].collider(this.bird)) {
+            // if (this.pipes[i].collider(this.bird)) {
 
-                Game.Instance().updateGameState("GameOver")
-                console.log('Game Over')
-            }
+            //     Game.Instance().updateGameState("GameOver")
+            //     console.log('Game Over')
+            // }
         }
     }
 
@@ -63,7 +60,7 @@ export class PipeSpawner {
         this.pipes.push(pipeUp)
         this.pipes.push(pipeDown)
 
-        Render.getInstance().add(pipeUp, 2)
-        Render.getInstance().add(pipeDown, 2)
+        // Render.getInstance().add(pipeUp, 2)
+        // Render.getInstance().add(pipeDown, 2)
     }
 }

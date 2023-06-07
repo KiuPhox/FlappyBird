@@ -8,6 +8,7 @@ import { PipeSpawner } from "./games/PipeSpawner"
 import { Render } from "./Render"
 import { GameState, GameStateUpdateHandler } from "./types/general"
 import { Vector2 } from "./utils/Vector2"
+import { Sprite } from "./components/Sprite"
 
 const FRAME_RATE = 120
 
@@ -28,6 +29,11 @@ export class Game {
     private frameTime: number
     private lastFrameTime: number
 
+    private bgSprite: Sprite
+    private groundSprite: Sprite
+    private birdSprite: Sprite
+    private gameOverSprite: Sprite
+
     public static Instance(): Game {
         if (!Game.instance) {
             Game.instance = new Game()
@@ -41,8 +47,12 @@ export class Game {
         this.lastFrameTime = 0
 
         this.bird = new Bird()
+        this.birdSprite = this.bird.getComponent('Sprite') as Sprite
+
         this.bg = Array.from({ length: 2 }, () => new Background())
-        this.pipeSpawner = new PipeSpawner(new Vector2(this.bg[0].width + 50, 0), this.bird)
+        this.bgSprite = this.bg[0].getComponent('Sprite') as Sprite
+
+        this.pipeSpawner = new PipeSpawner(new Vector2(this.bgSprite.width + 50, 0), this.bird)
         this.render = Render.getInstance()
         this.gameOver = new GameOver()
         this.message = new Message()
@@ -61,7 +71,6 @@ export class Game {
             this.update(deltaTime / 1000)
             this.lastFrameTime = time
             this.render.render()
-
         }
 
         window.requestAnimationFrame(() => {
@@ -73,48 +82,46 @@ export class Game {
 
         this.updateGameState('Idle')
 
-        this.bg[1].transform.position = new Vector2(this.bg[0].width, 0)
-        this.ground[0].transform.position = new Vector2(this.ground[0].transform.position.x, 420)
-        this.ground[1].transform.position = new Vector2(this.ground[0].width, 420)
-        this.gameOver.transform.position = new Vector2(this.bg[0].width / 2 - this.gameOver.width / 2, this.bg[0].height / 2 - this.gameOver.height / 2)
-        this.message.transform.position = new Vector2(this.bg[0].width / 2 - this.message.width / 2, this.bg[0].height / 2 - this.message.height / 2 + 50)
 
-        this.render.add(this.bird, 1)
-        this.render.add(this.ground[0], 1)
-        this.render.add(this.ground[1], 1)
-        this.render.add(this.bg[0], 3)
-        this.render.add(this.bg[1], 3)
+        this.gameOverSprite = this.gameOver.getComponent('Sprite') as Sprite
+        this.groundSprite = this.ground[0].getComponent('Sprite') as Sprite
+        const messageSprite = this.message.getComponent('Sprite') as Sprite
+
+        this.bg[1].transform.position = new Vector2(this.bgSprite.width, 0)
+        this.ground[0].transform.position = new Vector2(this.ground[0].transform.position.x, 420)
+        this.ground[1].transform.position = new Vector2(this.bgSprite.width, 420)
+        this.gameOver.transform.position = new Vector2(this.bgSprite.width / 2 - this.gameOverSprite.width / 2, this.bgSprite.height / 2 - this.gameOverSprite.height / 2)
+        this.message.transform.position = new Vector2(this.bgSprite.width / 2 - messageSprite.width / 2, this.bgSprite.height / 2 - messageSprite.height / 2 + 50)
 
         document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
         document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
 
-        this.pipeSpawner = new PipeSpawner(new Vector2(this.bg[0].width + 2, 0), this.bird)
+        this.pipeSpawner = new PipeSpawner(new Vector2(this.bgSprite.width + 2, 0), this.bird)
     }
 
     private update(delta: number): void {
         this.bird.update(delta)
 
         if (this.gameState == "Start" || this.gameState == "Idle") {
+            this.bgSprite.update(delta)
             this.bg[0].update(delta)
             this.bg[1].update(delta)
             this.ground[0].update(delta)
             this.ground[1].update(delta)
 
-
-            if (this.bg[0].transform.position.x + this.bg[0].width <= 0) {
+            if (this.bg[0].transform.position.x + this.bgSprite.width <= 0) {
                 const temp = this.bg[0]
                 this.bg[0] = this.bg[1]
                 this.bg[1] = temp
-                this.bg[1].transform.position = new Vector2(this.bg[0].width, 0)
+                this.bg[1].transform.position = new Vector2(this.bgSprite.width, 0)
             }
 
-            if (this.ground[0].transform.position.x + this.ground[0].width <= 0) {
+            if (this.ground[0].transform.position.x + this.groundSprite.width <= 0) {
                 const temp = this.ground[0]
                 this.ground[0] = this.ground[1]
                 this.ground[1] = temp
-                this.ground[1].transform.position = new Vector2(this.ground[0].width, 420)
+                this.ground[1].transform.position = new Vector2(this.bgSprite.width, 420)
             }
-
         }
 
         if (this.gameState == "Start") {
@@ -166,16 +173,13 @@ export class Game {
                 this.render.remove(this.gameOver)
                 this.pipeSpawner.clear()
 
-                this.bird.transform.position = new Vector2(this.bg[0].width / 2 - this.bird.width / 2,
-                    this.bg[0].height / 2 - this.bird.width / 2)
+                this.bird.transform.position = new Vector2(this.bgSprite.width / 2 - this.birdSprite.width / 2,
+                    this.bgSprite.height / 2 - this.birdSprite.width / 2)
                 this.bird.setVelocity(Vector2.zero)
                 this.bird.setGravity(0)
-
                 this.bird.setIsOver(false)
 
-                ScoreManager.Instance().reset()
-
-                this.render.add(this.message, 0)
+                //ScoreManager.Instance()
 
                 break
             case "Start":
@@ -183,18 +187,14 @@ export class Game {
                 this.bird.setGravity(0.15)
                 break
             case "GameOver":
-                this.render.add(this.gameOver, 0)
+                this.render.add(this.gameOver)
                 break
         }
-
-        for (const handler of this.gameStateUpdateHandlers) {
-            handler(gameState)
-        }
     }
 
-    public addOnGameStateUpdate(handler: GameStateUpdateHandler): void {
-        this.gameStateUpdateHandlers.push(handler)
-    }
+    // public addOnGameStateUpdate(handler: GameStateUpdateHandler): void {
+    //     this.gameStateUpdateHandlers.push(handler)
+    // }
 }
 
 Game.Instance()

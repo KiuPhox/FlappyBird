@@ -1,18 +1,14 @@
 import { CanvasView } from "./CanvasView"
+import { Sprite } from "./components/Sprite"
 import { GameObject } from "./games/GameObject"
-
-type RenderObject = {
-    gameObject: GameObject
-    priority: number
-}
 
 export class Render {
     private view: CanvasView = CanvasView.getInstance()
-    private objectsToRender: RenderObject[]
+    private objects: GameObject[]
     private static instance: Render
 
     constructor() {
-        this.objectsToRender = []
+        this.objects = []
     }
 
     public static getInstance(): Render {
@@ -22,31 +18,32 @@ export class Render {
         return Render.instance
     }
 
-    public add(gameObject: GameObject, priority: number) {
-        this.objectsToRender.push({ gameObject: gameObject, priority: priority })
-        this.sort()
+    public add(gameObject: GameObject): void {
+        if (gameObject.getComponent('Sprite') != null) {
+            this.objects.push(gameObject)
+            this.sort()
+        }
     }
 
     public remove(gameObject: GameObject) {
-        const index = this.objectsToRender.findIndex((item) => item.gameObject === gameObject)
+        const index = this.objects.indexOf(gameObject)
         if (index !== -1) {
-            this.objectsToRender.splice(index, 1)
+            this.objects.splice(index, 1)
         }
         this.sort()
     }
 
     private sort(): void {
-        this.objectsToRender.sort((a, b) => b.priority - a.priority)
+        this.objects.sort((a, b) => (b.getComponent('Sprite') as Sprite).order - (a.getComponent('Sprite') as Sprite).order)
     }
 
     public clear(): void {
-        this.objectsToRender.length = 0
+        this.objects.length = 0
         CanvasView.getInstance().clear()
     }
 
     public render(): void {
-        //console.log(this.objectsToRender.length)
-        for (const { gameObject } of this.objectsToRender) {
+        for (const gameObject of this.objects) {
             this.view.draw(gameObject)
         }
     }
