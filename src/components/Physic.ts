@@ -2,14 +2,39 @@ import { GameObject } from "../games/GameObject"
 import { Vector2 } from "../utils/Vector2"
 import { Component } from "./Component"
 
-const g = 9.8
-
 export class Physic extends Component {
-    private gravityScale: number
-    private velocity: Vector2
+    private _gravityScale: number
+    private _velocity: Vector2
 
     constructor(gameObject: GameObject, gravityScale: number) {
         super(gameObject)
-        this.gravityScale = gravityScale
+        this._name = 'Physic'
+        this._gravityScale = gravityScale
+        this._velocity = Vector2.zero
+    }
+
+    set velocity(v: Vector2) {
+        this._velocity = v
+    }
+
+    get velocity(): Vector2 {
+        return this._velocity
+    }
+
+    get gravityScale(): number {
+        return this._gravityScale
+    }
+
+    set gravityScale(v: number) {
+        this._gravityScale = v
+    }
+
+
+    update(delta: number): void {
+        if (this._gravityScale) {
+            this._velocity = this._velocity.add(new Vector2(0, this._gravityScale).mul(delta * 100))
+        }
+
+        this.gameObject.transform.position = this.gameObject.transform.position.add(this._velocity.mul(delta * 100))
     }
 }

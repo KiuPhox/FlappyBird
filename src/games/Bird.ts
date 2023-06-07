@@ -1,53 +1,58 @@
+import { Physic } from "../components/Physic"
 import { Game } from "../game"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
 
 export class Bird extends GameObject {
-    private velocity: Vector2
-    private gravity: number
     private jumpStrength: number
-
     private isOver: boolean
-    private delta: number
+    private physic: Physic
 
     constructor() {
         super()
-        this.velocity = Vector2.zero
-        this.gravity = 0
         this._image.src = "assets/images/bird-mid.png"
-        this.jumpStrength = 4.3
+        this.jumpStrength = 4
         this.isOver = false
+        this.physic = new Physic(this, 0)
+        this.addComponent(this.physic)
     }
 
     public update(delta: number): void {
-        this.delta = delta * 100
-        this.applyGravity()
-        this.updatePosition()
-        this.checkBounds()
+        super.update(delta)
+        this.rotateBaseOnGravity()
+        // this.applyGravity()
+        // this.updatePosition()
+        // this.checkBounds()
+
     }
 
     public jump(): void {
-        this.velocity = new Vector2(this.velocity.x, -this.jumpStrength)
+        this.physic.velocity = new Vector2(this.physic.velocity.x, -this.jumpStrength)
     }
 
-    private applyGravity(): void {
-        this.velocity = this.velocity.add(new Vector2(0, this.gravity * this.delta))
-
+    private rotateBaseOnGravity() {
         if (!this.isOver)
-            this.transform.rotation = this.velocity.y / 5
+            this.transform.rotation = this.physic.velocity.y / 5
     }
 
-    private updatePosition(): void {
-        this.transform.position = this.transform.position.add(this.velocity.mul(this.delta))
+    // private applyGravity(): void {
+    //     this.velocity = this.velocity.add(new Vector2(0, this.gravity * this.delta))
 
-        if (this.velocity.y > 0.5) {
-            this.image.src = 'assets/images/bird-up.png'
-        } else if (this.velocity.y < 0.5 && this.velocity.y > -1) {
-            this.image.src = 'assets/images/bird-mid.png'
-        } else if (this.velocity.y < -1) {
-            this.image.src = 'assets/images/bird-down.png'
-        }
-    }
+    //     if (!this.isOver)
+    //         this.transform.rotation = this.velocity.y / 5
+    // }
+
+    // private updatePosition(): void {
+    //     this.transform.position = this.transform.position.add(this.velocity.mul(this.delta))
+
+    //     if (this.velocity.y > 0.5) {
+    //         this.image.src = 'assets/images/bird-up.png'
+    //     } else if (this.velocity.y < 0.5 && this.velocity.y > -1) {
+    //         this.image.src = 'assets/images/bird-mid.png'
+    //     } else if (this.velocity.y < -1) {
+    //         this.image.src = 'assets/images/bird-down.png'
+    //     }
+    // }
 
     private checkBounds(): void {
 
@@ -68,11 +73,11 @@ export class Bird extends GameObject {
     }
 
     public setVelocity(velocity: Vector2): void {
-        this.velocity = velocity
+        this.physic.velocity = velocity
     }
 
     public setGravity(gravity: number): void {
-        this.gravity = gravity
+        this.physic.gravityScale = gravity
     }
 
 }
