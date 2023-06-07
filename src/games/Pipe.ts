@@ -12,9 +12,9 @@ export class Pipe extends GameObject {
     private collider: Collider
     private physic: Physic
 
-    constructor(position: Vector2, isCount: boolean) {
+    constructor() {
         super()
-        this.transform.position = position
+        this.transform.position = Vector2.zero
 
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite('assets/images/pipe-green.png')
@@ -27,7 +27,7 @@ export class Pipe extends GameObject {
         this.physic.velocity = new Vector2(-1.7, 0)
         this.addComponent(this.physic)
 
-        this.isCount = isCount
+        this.isCount = true
         Render.Instance().add(this)
     }
 

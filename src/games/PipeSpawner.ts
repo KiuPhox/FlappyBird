@@ -25,7 +25,7 @@ export class PipeSpawner {
 
         this.pipePool = new ObjectPool<Pipe>(
             () => {
-                const pipe = new Pipe(new Vector2(this.spawnPos.x, Utils.Random(180, 380)), true)
+                const pipe = new Pipe()
                 this.pipes.push(pipe)
                 console.log('a')
                 return pipe

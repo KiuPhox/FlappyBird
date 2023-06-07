@@ -8,6 +8,10 @@ import { GameState } from "../types/general"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
 
+const BIRD_UP_SPRITE = 'assets/images/bird-up.png'
+const BIRD_MID_SPRITE = 'assets/images/bird-mid.png'
+const BIRD_DOWN_SPRITE = 'assets/images/bird-down.png'
+
 export class Bird extends GameObject {
     private jumpStrength: number
     private physic: Physic
@@ -24,7 +28,7 @@ export class Bird extends GameObject {
         this.physic = new Physic(this, 0)
         this.sprite = new Sprite(this, 1)
         this.collider = new Collider(this)
-        this.sprite.setSprite("assets/images/bird-mid.png")
+        this.sprite.setSprite(BIRD_MID_SPRITE)
 
         this.addComponent(this.physic)
         this.addComponent(this.sprite)
@@ -49,11 +53,11 @@ export class Bird extends GameObject {
 
     private updateAnimation() {
         if (this.physic.velocity.y > 0.5) {
-            this.sprite.setSprite('assets/images/bird-up.png')
+            this.sprite.setSprite(BIRD_UP_SPRITE)
         } else if (this.physic.velocity.y < 0.5 && this.physic.velocity.y > -1) {
-            this.sprite.setSprite('assets/images/bird-mid.png')
+            this.sprite.setSprite(BIRD_MID_SPRITE)
         } else if (this.physic.velocity.y < -1) {
-            this.sprite.setSprite('assets/images/bird-down.png')
+            this.sprite.setSprite(BIRD_DOWN_SPRITE)
         }
     }
 
