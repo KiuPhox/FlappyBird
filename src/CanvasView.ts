@@ -1,8 +1,8 @@
-import { GameObject } from "./game_objects/GameObject"
+import { GameObject } from "./games/GameObject"
 
 
 export class CanvasView {
-    canvas: HTMLCanvasElement
+    private canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D | null
     private static instance: CanvasView
 
@@ -25,9 +25,9 @@ export class CanvasView {
         if (!this.context) return
 
         this.context.save()
-        this.context.translate(object.pos.x + object.width / 2, object.pos.y + object.height / 2)
-        this.context.rotate(object.rot)
-        this.context.drawImage(object.image, -object.width / 2, -object.height / 2, object.width * object.Scale, object.height * object.Scale)
+        this.context.translate(object.transform.position.x + object.width / 2, object.transform.position.y + object.height / 2)
+        this.context.rotate(object.transform.rotation)
+        this.context.drawImage(object.image, -object.width / 2, -object.height / 2, object.width * object.transform.scale, object.height * object.transform.scale)
         this.context.restore()
     }
 

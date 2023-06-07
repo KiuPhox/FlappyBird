@@ -1,19 +1,20 @@
-import { Render } from "../render"
-import { Vector } from "../types/general"
+import { Render } from "../Render"
+import { Vector2 } from "../utils/Vector2"
 import { Pipe } from "./Pipe"
 import { Bird } from "./Bird"
 import { Game } from "../game"
-import { Score } from "../Score"
+import { ScoreManager } from "../ScoreManager"
+import { Utils } from "../utils/Utils"
 
 export class PipeSpawner {
-    private spawnPos: Vector
+    private spawnPos: Vector2
     private spawnBetweenTime: number
     private spawnTimer: number
     private pipes: Pipe[]
     private bird: Bird
 
 
-    constructor(spawnPos: Vector, bird: Bird) {
+    constructor(spawnPos: Vector2, bird: Bird) {
         this.spawnPos = spawnPos
         this.spawnBetweenTime = 1
         this.spawnTimer = this.spawnBetweenTime
@@ -34,12 +35,12 @@ export class PipeSpawner {
 
             if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
                 this.pipes[i].setIsCount(true)
-                Score.getInstance().increaseScore()
+                ScoreManager.Instance().increaseScore()
             }
 
             if (this.pipes[i].collider(this.bird)) {
 
-                Game.getInstance().updateGameState("GameOver")
+                Game.Instance().updateGameState("GameOver")
                 console.log('Game Over')
             }
         }
@@ -54,10 +55,10 @@ export class PipeSpawner {
     }
 
     private spawn() {
-        const pipeUp = new Pipe({ x: this.spawnPos.x, y: this.getRandomNumber(180, 380) }, true)
-        const pipeDown = new Pipe({ x: this.spawnPos.x, y: pipeUp.pos.y - 430 }, false)
+        const pipeUp = new Pipe(new Vector2(this.spawnPos.x, Utils.Random(180, 380)), true)
+        const pipeDown = new Pipe(new Vector2(this.spawnPos.x, pipeUp.transform.position.y - 430), false)
 
-        pipeDown.rot = Math.PI
+        pipeDown.transform.rotation = Math.PI
 
         this.pipes.push(pipeUp)
         this.pipes.push(pipeDown)
@@ -65,9 +66,4 @@ export class PipeSpawner {
         Render.getInstance().add(pipeUp, 2)
         Render.getInstance().add(pipeDown, 2)
     }
-
-    private getRandomNumber(min: number, max: number): number {
-        return Math.random() * (max - min) + min
-    }
-
 }

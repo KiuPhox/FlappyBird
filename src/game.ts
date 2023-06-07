@@ -1,44 +1,53 @@
-import { Score } from "./Score"
-import { Background } from "./game_objects/Background"
-import { Bird } from "./game_objects/Bird"
-import { GameOver } from "./game_objects/GameOver"
-import { Ground } from "./game_objects/Ground"
-import { Message } from "./game_objects/Message"
-import { PipeSpawner } from "./game_objects/PipeSpawner"
-import { Render } from "./render"
+import { ScoreManager } from "./ScoreManager"
+import { Background } from "./games/Background"
+import { Bird } from "./games/Bird"
+import { GameOver } from "./games/GameOver"
+import { Ground } from "./games/Ground"
+import { Message } from "./games/Message"
+import { PipeSpawner } from "./games/PipeSpawner"
+import { Render } from "./Render"
 import { GameState, GameStateUpdateHandler } from "./types/general"
+import { Vector2 } from "./utils/Vector2"
 
 const FRAME_RATE = 120
 
 export class Game {
-    private bird: Bird = new Bird()
-    private bg: Background[] = Array.from({ length: 2 }, () => new Background())
-    private pipeSpawner: PipeSpawner = new PipeSpawner({ x: this.bg[0].width + 50, y: 0 }, this.bird)
-    private render: Render = Render.getInstance()
+    private bird: Bird
+    private bg: Background[]
+    private pipeSpawner: PipeSpawner
+    private render: Render
     private gameState: GameState
-    private gameOver: GameOver = new GameOver()
-    private message: Message = new Message()
-    private ground: Ground[] = Array.from({ length: 2 }, () => new Ground())
-    private static instance: Game
+    private gameOver: GameOver
+    private message: Message
+    private ground: Ground[]
 
+    private static instance: Game
     private gameStateUpdateHandlers: GameStateUpdateHandler[] = []
 
     private fps: number
     private frameTime: number
     private lastFrameTime: number
 
-    public static getInstance(): Game {
+    public static Instance(): Game {
         if (!Game.instance) {
             Game.instance = new Game()
         }
         return Game.instance
     }
-    // private ground: Ground[] = Array.from({ length: 2 }, () => new Ground())
 
     constructor() {
         this.fps = FRAME_RATE
         this.frameTime = 1000 / this.fps
         this.lastFrameTime = 0
+
+        this.bird = new Bird()
+        this.bg = Array.from({ length: 2 }, () => new Background())
+        this.pipeSpawner = new PipeSpawner(new Vector2(this.bg[0].width + 50, 0), this.bird)
+        this.render = Render.getInstance()
+        this.gameOver = new GameOver()
+        this.message = new Message()
+        this.ground = Array.from({ length: 2 }, () => new Ground())
+
         this.start()
         this.loop()
     }
@@ -64,11 +73,11 @@ export class Game {
 
         this.updateGameState('Idle')
 
-        this.bg[1].pos = { x: this.bg[0].width, y: 0 }
-        this.ground[0].pos = { x: this.ground[0].pos.x, y: 420 }
-        this.ground[1].pos = { x: this.ground[0].width, y: 420 }
-        this.gameOver.pos = { x: this.bg[0].width / 2 - this.gameOver.width / 2, y: this.bg[0].height / 2 - this.gameOver.height / 2 }
-        this.message.pos = { x: this.bg[0].width / 2 - this.message.width / 2, y: this.bg[0].height / 2 - this.message.height / 2 + 50 }
+        this.bg[1].transform.position = new Vector2(this.bg[0].width, 0)
+        this.ground[0].transform.position = new Vector2(this.ground[0].transform.position.x, 420)
+        this.ground[1].transform.position = new Vector2(this.ground[0].width, 420)
+        this.gameOver.transform.position = new Vector2(this.bg[0].width / 2 - this.gameOver.width / 2, this.bg[0].height / 2 - this.gameOver.height / 2)
+        this.message.transform.position = new Vector2(this.bg[0].width / 2 - this.message.width / 2, this.bg[0].height / 2 - this.message.height / 2 + 50)
 
         this.render.add(this.bird, 1)
         this.render.add(this.ground[0], 1)
@@ -79,9 +88,7 @@ export class Game {
         document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
         document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
 
-        this.pipeSpawner = new PipeSpawner({ x: this.bg[0].width + 2, y: 0 }, this.bird)
-
-        // this.ground[1].pos = { x: this.ground[1].width, y: this.bg[0].height - this.ground[1].height + 20 }
+        this.pipeSpawner = new PipeSpawner(new Vector2(this.bg[0].width + 2, 0), this.bird)
     }
 
     private update(delta: number): void {
@@ -94,18 +101,18 @@ export class Game {
             this.ground[1].update(delta)
 
 
-            if (this.bg[0].pos.x + this.bg[0].width <= 0) {
+            if (this.bg[0].transform.position.x + this.bg[0].width <= 0) {
                 const temp = this.bg[0]
                 this.bg[0] = this.bg[1]
                 this.bg[1] = temp
-                this.bg[1].pos = { x: this.bg[0].width, y: 0 }
+                this.bg[1].transform.position = new Vector2(this.bg[0].width, 0)
             }
 
-            if (this.ground[0].pos.x + this.ground[0].width <= 0) {
+            if (this.ground[0].transform.position.x + this.ground[0].width <= 0) {
                 const temp = this.ground[0]
                 this.ground[0] = this.ground[1]
                 this.ground[1] = temp
-                this.ground[1].pos = { x: this.ground[0].width, y: 420 }
+                this.ground[1].transform.position = new Vector2(this.ground[0].width, 420)
             }
 
         }
@@ -159,13 +166,14 @@ export class Game {
                 this.render.remove(this.gameOver)
                 this.pipeSpawner.clear()
 
-                this.bird.pos = { x: this.bg[0].width / 2 - this.bird.width / 2, y: this.bg[0].height / 2 - this.bird.width / 2 }
-                this.bird.setVelocity({ x: 0, y: 0 })
+                this.bird.transform.position = new Vector2(this.bg[0].width / 2 - this.bird.width / 2,
+                    this.bg[0].height / 2 - this.bird.width / 2)
+                this.bird.setVelocity(Vector2.zero)
                 this.bird.setGravity(0)
 
                 this.bird.setIsOver(false)
 
-                Score.getInstance().reset()
+                ScoreManager.Instance().reset()
 
                 this.render.add(this.message, 0)
 
@@ -173,8 +181,6 @@ export class Game {
             case "Start":
                 this.render.remove(this.message)
                 this.bird.setGravity(0.15)
-                //this.render.clear()
-                //this.start()
                 break
             case "GameOver":
                 this.render.add(this.gameOver, 0)
@@ -191,6 +197,6 @@ export class Game {
     }
 }
 
-Game.getInstance()
+Game.Instance()
 
 

@@ -3,6 +3,6 @@ import { GameObject } from "./GameObject"
 export class Message extends GameObject {
     constructor() {
         super()
-        this.objectImage.src = "assets/images/message.png"
+        this._image.src = "assets/images/message.png"
     }
 }

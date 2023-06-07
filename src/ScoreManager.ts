@@ -1,9 +1,10 @@
-import { GameObject } from "./game_objects/GameObject"
-import { Render } from "./render"
+import { GameObject } from "./games/GameObject"
+import { Render } from './Render'
+import { Vector2 } from "./utils/Vector2"
 
-export class Score {
+export class ScoreManager {
     private _score: number
-    private static instance: Score
+    private static instance: ScoreManager
     private digits: GameObject[]
     private highScore: number
 
@@ -18,14 +19,14 @@ export class Score {
         this.digits[3].image.src = "/assets/images/0.png"
 
 
-        this.digits[0].pos = { x: 120, y: 30 }
-        this.digits[1].pos = { x: this.digits[0].pos.x + 25, y: 30 }
+        this.digits[0].transform.position = new Vector2(120, 30)
+        this.digits[1].transform.position = new Vector2(this.digits[0].transform.position.x + 25, 30)
 
-        this.digits[2].pos = { x: 145, y: 70 }
-        this.digits[3].pos = { x: 130, y: 70 }
+        this.digits[2].transform.position = new Vector2(145, 70)
+        this.digits[3].transform.position = new Vector2(130, 70)
 
-        this.digits[2].Scale = 0.6
-        this.digits[3].Scale = 0.6
+        this.digits[2].transform.scale = 0.6
+        this.digits[3].transform.scale = 0.6
 
         Render.getInstance().add(this.digits[0], 0)
         Render.getInstance().add(this.digits[1], 0)
@@ -33,26 +34,22 @@ export class Score {
         Render.getInstance().add(this.digits[3], 0)
     }
 
-    public reset() {
+    public reset(): void {
         this._score = 0
         this.numberToDigits()
     }
 
-    public static getInstance(): Score {
-        if (!Score.instance) {
-            Score.instance = new Score(0)
+    public static Instance(): ScoreManager {
+        if (!ScoreManager.instance) {
+            ScoreManager.instance = new ScoreManager(0)
         }
-        return Score.instance
-    }
-
-    get score(): number {
-        return this._score
+        return ScoreManager.instance
     }
 
     public increaseScore(): void {
         this._score++
-        if (this.score > this.highScore) {
-            this.highScore = this.score
+        if (this._score > this.highScore) {
+            this.highScore = this._score
         }
         this.display()
     }
@@ -61,7 +58,7 @@ export class Score {
         this.numberToDigits()
     }
 
-    private numberToDigits() {
+    private numberToDigits(): void {
         this.digits[1].image.src = `/assets/images/${this._score % 10}.png`
         this.digits[0].image.src = `/assets/images/${Math.floor(this._score / 10)}.png`
         this.digits[2].image.src = `/assets/images/${this.highScore % 10}.png`
@@ -69,4 +66,4 @@ export class Score {
     }
 }
 
-Score.getInstance()
+ScoreManager.Instance()

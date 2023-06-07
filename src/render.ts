@@ -1,10 +1,14 @@
 import { CanvasView } from "./CanvasView"
-import { GameObject } from "./game_objects/GameObject"
+import { GameObject } from "./games/GameObject"
 
+type RenderObject = {
+    gameObject: GameObject
+    priority: number
+}
 
 export class Render {
     private view: CanvasView = CanvasView.getInstance()
-    private objectsToRender: { gameObject: GameObject, priority: number }[]
+    private objectsToRender: RenderObject[]
     private static instance: Render
 
     constructor() {
@@ -20,7 +24,7 @@ export class Render {
 
     public add(gameObject: GameObject, priority: number) {
         this.objectsToRender.push({ gameObject: gameObject, priority: priority })
-        this.objectsToRender.sort((a, b) => b.priority - a.priority)
+        this.sort()
     }
 
     public remove(gameObject: GameObject) {
@@ -28,10 +32,14 @@ export class Render {
         if (index !== -1) {
             this.objectsToRender.splice(index, 1)
         }
+        this.sort()
+    }
+
+    private sort(): void {
         this.objectsToRender.sort((a, b) => b.priority - a.priority)
     }
 
-    public clear() {
+    public clear(): void {
         this.objectsToRender.length = 0
         CanvasView.getInstance().clear()
     }
