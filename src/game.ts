@@ -90,7 +90,6 @@ export class Game {
         this.gameOverSprite = this.gameOver.getComponent('Sprite') as Sprite
         this.groundSprite = this.ground[0].getComponent('Sprite') as Sprite
         const messageSprite = this.message.getComponent('Sprite') as Sprite
-        const playAgainSprite = this.playAgainButton.getComponent('Sprite') as Sprite
 
         this.bg[1].transform.position = new Vector2(this.bgSprite.width, 0)
         this.ground[0].transform.position = new Vector2(this.ground[0].transform.position.x, 420)

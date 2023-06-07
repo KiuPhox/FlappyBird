@@ -27,7 +27,9 @@ export class GameObject {
 
     public update(delta: number): void {
         for (const key in this.components) {
-            this.components[key].update(delta)
+            if (this.active) {
+                this.components[key].update(delta)
+            }
         }
     }
 
