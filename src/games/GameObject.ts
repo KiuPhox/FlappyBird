@@ -23,10 +23,6 @@ export class GameObject {
 
     get transform(): Transform { return this._transform }
 
-    // get center(): Vector2 {
-    //     return new Vector2(this.transform.position.x + this._image.width / 2, this.transform.position.y + this._image.height / 2)
-    // }
-
     public update(delta: number): void {
         for (const key in this.components) {
             this.components[key].update(delta)

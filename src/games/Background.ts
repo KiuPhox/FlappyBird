@@ -4,7 +4,7 @@ import { Sprite } from "../components/Sprite"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
 
-export class Background extends GameObject {
+export default class Background extends GameObject {
     private sprite: Sprite
     private physic: Physic
 

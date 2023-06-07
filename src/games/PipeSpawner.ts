@@ -4,8 +4,8 @@ import { Pipe } from "./Pipe"
 import { Bird } from "./Bird"
 import { Utils } from "../utils/Utils"
 import { Collider } from "../components/Collider"
-import { Game } from "../game"
 import { ScoreManager } from "../ScoreManager"
+import { GameManager } from "../GameManager"
 
 export class PipeSpawner {
     private spawnPos: Vector2
@@ -41,8 +41,7 @@ export class PipeSpawner {
 
 
             if ((this.pipes[i].getComponent('Collider') as Collider).isTouch(this.birdCollider)) {
-                Game.Instance().updateGameState("GameOver")
-                console.log('Game Over')
+                GameManager.Instance().updateGameState("GameOver")
             }
         }
     }

@@ -1,14 +1,17 @@
 import { ScoreManager } from "./ScoreManager"
-import { Background } from "./games/Background"
+import Background from "./games/Background"
 import { Bird } from "./games/Bird"
 import { GameOver } from "./games/GameOver"
 import { Ground } from "./games/Ground"
 import { Message } from "./games/Message"
 import { PipeSpawner } from "./games/PipeSpawner"
 import { Render } from "./Render"
-import { GameState, GameStateUpdateHandler } from "./types/general"
+import { Command, GameState } from "./types/general"
 import { Vector2 } from "./utils/Vector2"
 import { Sprite } from "./components/Sprite"
+import { GameManager } from "./GameManager"
+import JumpCommand from "./utils/command/JumpCommand"
+import UpdateGameStateCommand from "./utils/command/UpdateGameStateCommand"
 
 const FRAME_RATE = 120
 
@@ -22,9 +25,6 @@ export class Game {
     private message: Message
     private ground: Ground[]
 
-    private static instance: Game
-    private gameStateUpdateHandlers: GameStateUpdateHandler[] = []
-
     private fps: number
     private frameTime: number
     private lastFrameTime: number
@@ -34,17 +34,16 @@ export class Game {
     private birdSprite: Sprite
     private gameOverSprite: Sprite
 
-    public static Instance(): Game {
-        if (!Game.instance) {
-            Game.instance = new Game()
-        }
-        return Game.instance
-    }
+    private gameManager: GameManager
+
 
     constructor() {
         this.fps = FRAME_RATE
         this.frameTime = 1000 / this.fps
         this.lastFrameTime = 0
+
+        this.gameManager = GameManager.Instance()
+        this.gameManager.OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
 
         this.bird = new Bird()
         this.birdSprite = this.bird.getComponent('Sprite') as Sprite
@@ -57,6 +56,9 @@ export class Game {
         this.gameOver = new GameOver()
         this.message = new Message()
         this.ground = Array.from({ length: 2 }, () => new Ground(this.bird))
+
+        this.gameManager.updateGameState('Idle')
+
 
         this.start()
         this.loop()
@@ -80,7 +82,7 @@ export class Game {
 
     private start(): void {
 
-        this.updateGameState('Idle')
+        this.OnGameStateChanged('Idle')
 
 
         this.gameOverSprite = this.gameOver.getComponent('Sprite') as Sprite
@@ -129,41 +131,60 @@ export class Game {
         }
     }
 
+    // private inputHandler(event: KeyboardEvent | MouseEvent): void {
+    //     if (this.gameState == "Start") {
+    //         if (event instanceof KeyboardEvent) {
+    //             if (event.code === 'Space') {
+    //                 this.bird.jump()
+    //             }
+    //         } else if (event instanceof MouseEvent) {
+    //             this.bird.jump()
+    //         }
+    //     } else if (this.gameState == "Idle") {
+    //         if (event instanceof KeyboardEvent) {
+    //             if (event.code === 'Space') {
+    //                 this.bird.jump()
+    //                 this.gameManager.updateGameState("Start")
+    //             }
+    //         } else if (event instanceof MouseEvent) {
+    //             this.bird.jump()
+    //             this.gameManager.updateGameState("Start")
+    //         }
+    //     } else if (this.gameState == "GameOver") {
+    //         if (event instanceof KeyboardEvent) {
+    //             if (event.code === 'Space') {
+    //                 this.gameManager.updateGameState("Idle")
+    //             }
+    //         } else if (event instanceof MouseEvent) {
+    //             this.gameManager.updateGameState("Idle")
+    //         }
+    //     }
+    // }
+
     private inputHandler(event: KeyboardEvent | MouseEvent): void {
-        if (this.gameState == "Start") {
-            if (event instanceof KeyboardEvent) {
-                if (event.code === 'Space') {
-                    this.bird.jump()
-                }
-            } else if (event instanceof MouseEvent) {
-                this.bird.jump()
-            }
-        } else if (this.gameState == "Idle") {
-            if (event instanceof KeyboardEvent) {
-                if (event.code === 'Space') {
-                    this.bird.jump()
-                    this.updateGameState("Start")
-                }
-            } else if (event instanceof MouseEvent) {
-                this.bird.jump()
-                this.updateGameState("Start")
-            }
-        } else if (this.gameState == "GameOver") {
-            if (event instanceof KeyboardEvent) {
-                if (event.code === 'Space') {
-                    this.updateGameState("Idle")
-                }
-            } else if (event instanceof MouseEvent) {
-                this.updateGameState("Idle")
-            }
+        const isKeyboardEvent = event instanceof KeyboardEvent
+        const isMouseEvent = event instanceof MouseEvent
+
+        const commands: Command[] = []
+
+        if (this.gameState === "Start" && ((isKeyboardEvent && event.code === 'Space') || isMouseEvent)) {
+            commands.push(new JumpCommand(this.bird))
+        } else if (this.gameState === "Idle" && ((isKeyboardEvent && event.code === 'Space') || isMouseEvent)) {
+            commands.push(new JumpCommand(this.bird))
+            commands.push(new UpdateGameStateCommand("Start"))
+        } else if (this.gameState === "GameOver" && ((isKeyboardEvent && event.code === 'Space') || isMouseEvent)) {
+            commands.push(new UpdateGameStateCommand("Idle"))
+            console.log('a')
         }
+
+        commands.forEach(command => command.execute())
     }
 
     public getGameState(): string {
         return this.gameState
     }
 
-    public updateGameState(gameState: GameState): void {
+    private OnGameStateChanged(gameState: GameState): void {
         if (this.gameState === gameState) return
 
         this.gameState = gameState
@@ -175,28 +196,19 @@ export class Game {
 
                 this.bird.transform.position = new Vector2(this.bgSprite.width / 2 - this.birdSprite.width / 2,
                     this.bgSprite.height / 2 - this.birdSprite.width / 2)
-                this.bird.setVelocity(Vector2.zero)
-                this.bird.setGravity(0)
-                this.bird.setIsOver(false)
 
                 ScoreManager.Instance().reset()
-
                 break
             case "Start":
                 this.render.remove(this.message)
-                this.bird.setGravity(0.15)
                 break
             case "GameOver":
                 this.render.add(this.gameOver)
                 break
         }
     }
-
-    // public addOnGameStateUpdate(handler: GameStateUpdateHandler): void {
-    //     this.gameStateUpdateHandlers.push(handler)
-    // }
 }
 
-Game.Instance()
+new Game()
 
 

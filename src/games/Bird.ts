@@ -1,8 +1,9 @@
+import { GameManager } from "../GameManager"
 import { Render } from "../Render"
 import { Collider } from "../components/Collider"
 import { Physic } from "../components/Physic"
 import { Sprite } from "../components/Sprite"
-import { Game } from "../game"
+import { GameState } from "../types/general"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
 
@@ -15,8 +16,11 @@ export class Bird extends GameObject {
 
     constructor() {
         super()
+        GameManager.Instance().OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
+
         this.jumpStrength = 4
         this.isOver = false
+
         this.physic = new Physic(this, 0)
         this.sprite = new Sprite(this, 1)
         this.collider = new Collider(this)
@@ -26,7 +30,6 @@ export class Bird extends GameObject {
         this.addComponent(this.sprite)
         this.addComponent(this.collider)
 
-
         Render.getInstance().add(this)
     }
 
@@ -34,6 +37,7 @@ export class Bird extends GameObject {
         super.update(delta)
         this.rotateBaseOnGravity()
         this.checkBounds()
+        this.updateAnimation()
     }
 
     public jump(): void {
@@ -59,11 +63,24 @@ export class Bird extends GameObject {
         if (!this.isOver && this.transform.position.y > 400 || this.transform.position.y < 0) {
             this.isOver = true
             this.transform.position = new Vector2(this.transform.position.x, 400)
-            Game.Instance().updateGameState("GameOver")
+            GameManager.Instance().updateGameState("GameOver")
         }
 
         if (this.transform.position.y > 400) {
             this.transform.position = new Vector2(this.transform.position.x, 400)
+        }
+    }
+
+    private OnGameStateChanged(gameState: GameState) {
+        switch (gameState) {
+            case "Idle":
+                this.setVelocity(Vector2.zero)
+                this.setGravity(0)
+                this.setIsOver(false)
+                break
+            case "Start":
+                this.setGravity(0.15)
+                break
         }
     }
 
