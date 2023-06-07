@@ -32,4 +32,8 @@ export class GameManager {
         }
         this.OnGameStateChanged.invoke(this.gameState)
     }
+
+    public getGameState(): GameState {
+        return this.gameState
+    }
 }

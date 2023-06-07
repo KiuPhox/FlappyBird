@@ -9,7 +9,6 @@ import { GameObject } from "./GameObject"
 
 export class Bird extends GameObject {
     private jumpStrength: number
-    private isOver: boolean
     private physic: Physic
     private sprite: Sprite
     private collider: Collider
@@ -19,7 +18,6 @@ export class Bird extends GameObject {
         GameManager.Instance().OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
 
         this.jumpStrength = 4
-        this.isOver = false
 
         this.physic = new Physic(this, 0)
         this.sprite = new Sprite(this, 1)
@@ -45,8 +43,7 @@ export class Bird extends GameObject {
     }
 
     private rotateBaseOnGravity() {
-        if (!this.isOver)
-            this.transform.rotation = this.physic.velocity.y / 5
+        this.transform.rotation = this.physic.velocity.y / 5
     }
 
     private updateAnimation() {
@@ -60,15 +57,15 @@ export class Bird extends GameObject {
     }
 
     private checkBounds(): void {
-        if (!this.isOver && this.transform.position.y > 400 || this.transform.position.y < 0) {
-            this.isOver = true
-            this.transform.position = new Vector2(this.transform.position.x, 400)
-            GameManager.Instance().updateGameState("GameOver")
-        }
+        // if (!this.isOver && this.transform.position.y > 400 || this.transform.position.y < 0) {
+        //     this.isOver = true
+        //     this.transform.position = new Vector2(this.transform.position.x, 400)
+        //     GameManager.Instance().updateGameState("GameOver")
+        // }
 
-        if (this.transform.position.y > 400) {
-            this.transform.position = new Vector2(this.transform.position.x, 400)
-        }
+        // if (this.transform.position.y > 400) {
+        //     this.transform.position = new Vector2(this.transform.position.x, 400)
+        // }
     }
 
     private OnGameStateChanged(gameState: GameState) {
@@ -76,16 +73,11 @@ export class Bird extends GameObject {
             case "Idle":
                 this.setVelocity(Vector2.zero)
                 this.setGravity(0)
-                this.setIsOver(false)
                 break
             case "Start":
                 this.setGravity(0.15)
                 break
         }
-    }
-
-    public setIsOver(isOver: boolean): void {
-        this.isOver = isOver
     }
 
     public setVelocity(velocity: Vector2): void {

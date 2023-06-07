@@ -4,6 +4,8 @@ import { Component } from "./Component"
 import { Sprite } from "./Sprite"
 
 export class Collider extends Component {
+    private isTrigger: false
+
     constructor(gameObject: GameObject) {
         super(gameObject)
         this._name = "Collider"
@@ -12,6 +14,10 @@ export class Collider extends Component {
     get size(): Vector2 {
         const sprite = this.gameObject.getComponent('Sprite') as Sprite
         return new Vector2(sprite.width, sprite.height)
+    }
+
+    public update(delta: number): void {
+        super.update(delta)
     }
 
     public isTouch(col: Collider) {

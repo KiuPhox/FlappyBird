@@ -81,9 +81,7 @@ export class Game {
     }
 
     private start(): void {
-
         this.OnGameStateChanged('Idle')
-
 
         this.gameOverSprite = this.gameOver.getComponent('Sprite') as Sprite
         this.groundSprite = this.ground[0].getComponent('Sprite') as Sprite
@@ -131,36 +129,6 @@ export class Game {
         }
     }
 
-    // private inputHandler(event: KeyboardEvent | MouseEvent): void {
-    //     if (this.gameState == "Start") {
-    //         if (event instanceof KeyboardEvent) {
-    //             if (event.code === 'Space') {
-    //                 this.bird.jump()
-    //             }
-    //         } else if (event instanceof MouseEvent) {
-    //             this.bird.jump()
-    //         }
-    //     } else if (this.gameState == "Idle") {
-    //         if (event instanceof KeyboardEvent) {
-    //             if (event.code === 'Space') {
-    //                 this.bird.jump()
-    //                 this.gameManager.updateGameState("Start")
-    //             }
-    //         } else if (event instanceof MouseEvent) {
-    //             this.bird.jump()
-    //             this.gameManager.updateGameState("Start")
-    //         }
-    //     } else if (this.gameState == "GameOver") {
-    //         if (event instanceof KeyboardEvent) {
-    //             if (event.code === 'Space') {
-    //                 this.gameManager.updateGameState("Idle")
-    //             }
-    //         } else if (event instanceof MouseEvent) {
-    //             this.gameManager.updateGameState("Idle")
-    //         }
-    //     }
-    // }
-
     private inputHandler(event: KeyboardEvent | MouseEvent): void {
         const isKeyboardEvent = event instanceof KeyboardEvent
         const isMouseEvent = event instanceof MouseEvent
@@ -174,14 +142,9 @@ export class Game {
             commands.push(new UpdateGameStateCommand("Start"))
         } else if (this.gameState === "GameOver" && ((isKeyboardEvent && event.code === 'Space') || isMouseEvent)) {
             commands.push(new UpdateGameStateCommand("Idle"))
-            console.log('a')
         }
 
         commands.forEach(command => command.execute())
-    }
-
-    public getGameState(): string {
-        return this.gameState
     }
 
     private OnGameStateChanged(gameState: GameState): void {
