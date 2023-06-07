@@ -41,14 +41,14 @@ export class PipeSpawner {
 
 
             if ((this.pipes[i].getComponent('Collider') as Collider).isTouch(this.birdCollider)) {
-                GameManager.Instance().updateGameState("GameOver")
+                (GameManager.Instance() as GameManager).updateGameState("GameOver")
             }
         }
     }
 
     public clear() {
         for (const pipe of this.pipes) {
-            Render.getInstance().remove(pipe)
+            Render.Instance().remove(pipe)
         }
 
         this.pipes = []

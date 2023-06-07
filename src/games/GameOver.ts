@@ -12,6 +12,6 @@ export class GameOver extends GameObject {
         this.sprite = new Sprite(this, 0)
         this.sprite.setSprite("assets/images/gameover.png")
         this.addComponent(this.sprite)
-        Render.getInstance().add(this)
+        Render.Instance().add(this)
     }
 }

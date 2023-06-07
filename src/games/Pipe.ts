@@ -28,7 +28,7 @@ export class Pipe extends GameObject {
         this.addComponent(this.physic)
 
         this.isCount = isCount
-        Render.getInstance().add(this)
+        Render.Instance().add(this)
     }
 
     get center(): Vector2 {

@@ -19,6 +19,6 @@ export default class Background extends GameObject {
         this.addComponent(this.physic)
         this.addComponent(this.sprite)
 
-        Render.getInstance().add(this)
+        Render.Instance().add(this)
     }
 }

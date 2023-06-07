@@ -21,7 +21,7 @@ export class ScoreManager {
             this.sprites[i] = new Sprite(this.digits[i], 0)
             this.digits[i].addComponent(this.sprites[i])
             this.sprites[i].setSprite("/assets/images/0.png")
-            Render.getInstance().add(this.digits[i])
+            Render.Instance().add(this.digits[i])
         }
 
 

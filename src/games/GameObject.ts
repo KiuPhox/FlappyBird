@@ -11,6 +11,7 @@ export type Transform = {
 export class GameObject {
     private _transform: Transform
     private components: { [key: string]: Component }
+    private isActive: boolean
 
     constructor() {
         this._transform = {
@@ -18,6 +19,7 @@ export class GameObject {
             rotation: 0,
             scale: 1
         }
+        this.isActive = true
         this.components = {}
     }
 
@@ -36,4 +38,7 @@ export class GameObject {
     public getComponent(name: string): Component {
         return this.components[name]
     }
+
+    get active(): boolean { return this.isActive }
+    public setActive(value: boolean): void { this.isActive = value }
 }

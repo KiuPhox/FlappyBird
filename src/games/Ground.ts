@@ -32,7 +32,7 @@ export class Ground extends GameObject {
         this.physic.velocity = new Vector2(-1.7, 0)
         this.addComponent(this.physic)
 
-        Render.getInstance().add(this)
+        Render.Instance().add(this)
     }
 
     public update(delta: number): void {

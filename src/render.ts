@@ -3,7 +3,7 @@ import { Sprite } from "./components/Sprite"
 import { GameObject } from "./games/GameObject"
 
 export class Render {
-    private view: CanvasView = CanvasView.getInstance()
+    private view: CanvasView = CanvasView.Instance()
     private objects: GameObject[]
     private static instance: Render
 
@@ -11,7 +11,7 @@ export class Render {
         this.objects = []
     }
 
-    public static getInstance(): Render {
+    public static Instance(): Render {
         if (!Render.instance) {
             Render.instance = new Render()
         }
@@ -39,7 +39,7 @@ export class Render {
 
     public clear(): void {
         this.objects.length = 0
-        CanvasView.getInstance().clear()
+        CanvasView.Instance().clear()
     }
 
     public render(): void {

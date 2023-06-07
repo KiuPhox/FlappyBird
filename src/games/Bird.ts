@@ -1,3 +1,4 @@
+import { CanvasView } from "../CanvasView"
 import { GameManager } from "../GameManager"
 import { Render } from "../Render"
 import { Collider } from "../components/Collider"
@@ -15,6 +16,7 @@ export class Bird extends GameObject {
 
     constructor() {
         super()
+
         GameManager.Instance().OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
 
         this.jumpStrength = 4
@@ -28,13 +30,12 @@ export class Bird extends GameObject {
         this.addComponent(this.sprite)
         this.addComponent(this.collider)
 
-        Render.getInstance().add(this)
+        Render.Instance().add(this)
     }
 
     public update(delta: number): void {
         super.update(delta)
         this.rotateBaseOnGravity()
-        this.checkBounds()
         this.updateAnimation()
     }
 
@@ -56,36 +57,20 @@ export class Bird extends GameObject {
         }
     }
 
-    private checkBounds(): void {
-        // if (!this.isOver && this.transform.position.y > 400 || this.transform.position.y < 0) {
-        //     this.isOver = true
-        //     this.transform.position = new Vector2(this.transform.position.x, 400)
-        //     GameManager.Instance().updateGameState("GameOver")
-        // }
-
-        // if (this.transform.position.y > 400) {
-        //     this.transform.position = new Vector2(this.transform.position.x, 400)
-        // }
-    }
-
     private OnGameStateChanged(gameState: GameState) {
         switch (gameState) {
             case "Idle":
-                this.setVelocity(Vector2.zero)
-                this.setGravity(0)
+                this.transform.position = new Vector2(
+                    CanvasView.Instance().width / 2 - this.sprite.width / 2,
+                    CanvasView.Instance().height / 2 - this.sprite.height / 2
+                )
+
+                this.physic.velocity = Vector2.zero
+                this.physic.gravityScale = 0
                 break
             case "Start":
-                this.setGravity(0.15)
+                this.physic.gravityScale = 0.15
                 break
         }
     }
-
-    public setVelocity(velocity: Vector2): void {
-        this.physic.velocity = velocity
-    }
-
-    public setGravity(gravity: number): void {
-        this.physic.gravityScale = gravity
-    }
-
 }
