@@ -33,10 +33,7 @@ export class Bird extends GameObject {
     public update(delta: number): void {
         super.update(delta)
         this.rotateBaseOnGravity()
-        // this.applyGravity()
-        // this.updatePosition()
-        // this.checkBounds()
-
+        this.checkBounds()
     }
 
     public jump(): void {
@@ -48,27 +45,17 @@ export class Bird extends GameObject {
             this.transform.rotation = this.physic.velocity.y / 5
     }
 
-    // private applyGravity(): void {
-    //     this.velocity = this.velocity.add(new Vector2(0, this.gravity * this.delta))
-
-    //     if (!this.isOver)
-    //         this.transform.rotation = this.velocity.y / 5
-    // }
-
-    // private updatePosition(): void {
-    //     this.transform.position = this.transform.position.add(this.velocity.mul(this.delta))
-
-    //     if (this.velocity.y > 0.5) {
-    //         this.image.src = 'assets/images/bird-up.png'
-    //     } else if (this.velocity.y < 0.5 && this.velocity.y > -1) {
-    //         this.image.src = 'assets/images/bird-mid.png'
-    //     } else if (this.velocity.y < -1) {
-    //         this.image.src = 'assets/images/bird-down.png'
-    //     }
-    // }
+    private updateAnimation() {
+        if (this.physic.velocity.y > 0.5) {
+            this.sprite.setSprite('assets/images/bird-up.png')
+        } else if (this.physic.velocity.y < 0.5 && this.physic.velocity.y > -1) {
+            this.sprite.setSprite('assets/images/bird-mid.png')
+        } else if (this.physic.velocity.y < -1) {
+            this.sprite.setSprite('assets/images/bird-down.png')
+        }
+    }
 
     private checkBounds(): void {
-
         if (!this.isOver && this.transform.position.y > 400 || this.transform.position.y < 0) {
             this.isOver = true
             this.transform.position = new Vector2(this.transform.position.x, 400)
@@ -77,7 +64,6 @@ export class Bird extends GameObject {
 
         if (this.transform.position.y > 400) {
             this.transform.position = new Vector2(this.transform.position.x, 400)
-            //this.velocity.y = 0
         }
     }
 

@@ -5,6 +5,7 @@ import { Bird } from "./Bird"
 import { Utils } from "../utils/Utils"
 import { Collider } from "../components/Collider"
 import { Game } from "../game"
+import { ScoreManager } from "../ScoreManager"
 
 export class PipeSpawner {
     private spawnPos: Vector2
@@ -33,22 +34,16 @@ export class PipeSpawner {
         for (let i = 0; i < this.pipes.length; i++) {
             this.pipes[i].update(delta)
 
-            // if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
-            //     this.pipes[i].setIsCount(true)
-            //     ScoreManager.Instance().increaseScore()
-            // }
+            if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
+                this.pipes[i].setIsCount(true)
+                ScoreManager.Instance().increaseScore()
+            }
 
 
             if ((this.pipes[i].getComponent('Collider') as Collider).isTouch(this.birdCollider)) {
                 Game.Instance().updateGameState("GameOver")
                 console.log('Game Over')
             }
-
-            // if (this.pipes[i].collider(this.bird)) {
-
-            //     Game.Instance().updateGameState("GameOver")
-            //     console.log('Game Over')
-            // }
         }
     }
 

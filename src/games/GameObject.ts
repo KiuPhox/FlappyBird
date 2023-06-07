@@ -18,7 +18,6 @@ export class GameObject {
             rotation: 0,
             scale: 1
         }
-
         this.components = {}
     }
 
@@ -33,15 +32,6 @@ export class GameObject {
             this.components[key].update(delta)
         }
     }
-
-    // public collider(otherObject: GameObject): boolean {
-    //     return (
-    //         this.transform.position.x < otherObject.transform.position.x + otherObject.width &&
-    //         this.transform.position.x + this.width > otherObject.transform.position.x &&
-    //         this.transform.position.y < otherObject.transform.position.y + otherObject.height &&
-    //         this.transform.position.y + this.height > otherObject.transform.position.y
-    //     )
-    // }
 
     public addComponent(component: Component): void {
         this.components[component.name] = component

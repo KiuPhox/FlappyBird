@@ -179,7 +179,7 @@ export class Game {
                 this.bird.setGravity(0)
                 this.bird.setIsOver(false)
 
-                //ScoreManager.Instance()
+                ScoreManager.Instance().reset()
 
                 break
             case "Start":

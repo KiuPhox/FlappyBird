@@ -1,20 +1,20 @@
 import { Render } from "../Render"
 import { Collider } from "../components/Collider"
+import { Physic } from "../components/Physic"
 import { Sprite } from "../components/Sprite"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
 
 
 export class Pipe extends GameObject {
-    private velocity: Vector2
     private isCount: boolean
     private sprite: Sprite
     private collider: Collider
+    private physic: Physic
 
     constructor(position: Vector2, isCount: boolean) {
         super()
         this.transform.position = position
-        this.velocity = new Vector2(-1.7, 0)
 
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite('assets/images/pipe-green.png')
@@ -23,20 +23,17 @@ export class Pipe extends GameObject {
         this.collider = new Collider(this)
         this.addComponent(this.collider)
 
+        this.physic = new Physic(this, 0)
+        this.physic.velocity = new Vector2(-1.7, 0)
+        this.addComponent(this.physic)
+
         this.isCount = isCount
         Render.getInstance().add(this)
     }
 
-    public update(delta: number): void {
-        this.transform.position = this.transform.position.add(this.velocity.mul(delta * 100))
+    get center(): Vector2 {
+        return new Vector2(this.transform.position.x + this.sprite.width / 2, this.transform.position.y + this.sprite.height / 2)
     }
-
-    // public collider(otherObject: GameObject): boolean {
-    //     if (otherObject instanceof Bird) {
-    //         return otherObject.collider(this)
-    //     }
-    //     return super.collider(otherObject)
-    // }
 
 
     public setIsCount(value: boolean) {
