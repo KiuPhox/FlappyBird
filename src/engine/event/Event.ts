@@ -12,7 +12,7 @@ export class Event<T> {
         }
     }
 
-    public invoke(arg: any): void {
+    public invoke(arg: T): void {
         for (const listener of this.listeners) {
             listener(arg)
         }

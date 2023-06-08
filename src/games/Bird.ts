@@ -1,4 +1,4 @@
-import { GameManager } from "../GameManager"
+import { GameManager } from "./GameManager"
 import { Collider } from "../engine/components/Collider"
 import { Physic } from "../engine/components/Physic"
 import { Sprite } from "../engine/components/Sprite"

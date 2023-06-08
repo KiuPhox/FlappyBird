@@ -1,5 +1,5 @@
-import { GameState } from "./types/general"
-import { Event } from "./utils/event/Event"
+import { GameState } from "../types/general"
+import { Event } from "../engine/event/Event"
 
 export class GameManager {
     private gameState: GameState

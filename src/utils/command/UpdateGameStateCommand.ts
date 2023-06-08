@@ -1,4 +1,4 @@
-import { GameManager } from "../../GameManager"
+import { GameManager } from "../../games/GameManager"
 import { Command, GameState } from "../../types/general"
 
 export default class UpdateGameStateCommand implements Command {
