@@ -11,6 +11,7 @@ export class Pipe extends GameObject {
 
     constructor() {
         super()
+        this.layer = "Background"
         this.name = "Pipe"
         this.transform.position = Vector2.zero
 
@@ -19,7 +20,11 @@ export class Pipe extends GameObject {
 
         this.addComponent(this.sprite)
         this.addComponent(new Collider(this))
-        this.addComponent(new RigidBody(this, 0))
+
+        const rb = new RigidBody(this, 0)
+        rb.isStatic = true
+        this.addComponent(rb)
+
         this.isCount = true
     }
 

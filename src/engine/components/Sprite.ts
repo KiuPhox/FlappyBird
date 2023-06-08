@@ -19,18 +19,15 @@ export class Sprite extends Component {
         Canvas.registerSprite(this)
     }
 
-    public setSprite(sprite: string) {
-        this._image.src = sprite
+    public setSprite(path: string) {
+        this._image.src = path
     }
 
-    get order(): number {
-        return this._order
-    }
+    get order(): number { return this._order }
 
     get width(): number { return this._image.width }
 
     get height(): number { return this._image.height }
-
 
     get image(): HTMLImageElement { return this._image }
 }

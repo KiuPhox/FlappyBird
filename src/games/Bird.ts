@@ -15,22 +15,20 @@ export class Bird extends GameObject {
     private jumpForce: number
     private rigidBody: RigidBody
     private sprite: Sprite
-    private collider: Collider
 
     constructor() {
         super()
         GameManager.Instance().OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
         this.name = "Bird"
-        this.jumpForce = 4.3
+        this.jumpForce = 4.5
 
         this.rigidBody = new RigidBody(this, 0)
         this.sprite = new Sprite(this, 1)
-        this.collider = new Collider(this)
         this.sprite.setSprite(BIRD_MID_SPRITE)
 
+        this.addComponent(new Collider(this))
         this.addComponent(this.rigidBody)
         this.addComponent(this.sprite)
-        this.addComponent(this.collider)
     }
 
     public update(): void {

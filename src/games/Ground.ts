@@ -4,20 +4,19 @@ import { Sprite } from "../engine/components/Sprite"
 import { GameObject } from "./GameObject"
 
 export class Ground extends GameObject {
-    private collider: Collider
-
     constructor() {
         super()
 
         this.name = "Ground"
+        this.layer = "Background"
 
         const sprite = new Sprite(this, 1)
         sprite.setSprite("assets/images/base.png")
-
         this.addComponent(sprite)
+        this.addComponent(new Collider(this))
 
-        this.collider = new Collider(this)
-        this.addComponent(this.collider)
-        this.addComponent(new RigidBody(this, 0))
+        const rb = new RigidBody(this, 0)
+        rb.isStatic = true
+        this.addComponent(rb)
     }
 }

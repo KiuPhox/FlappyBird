@@ -17,6 +17,7 @@ import { RigidBody } from "./engine/components/RigidBody"
 import { UIManager } from "./engine/UI/UIManager"
 import { Physic } from "./engine/system/Physic"
 import { Input } from "./engine/system/Input"
+import { Layer } from "./engine/system/Layer"
 
 const FRAME_RATE = 200
 
@@ -42,6 +43,9 @@ export class Game {
         Time.init()
         UIManager.init()
         Canvas.init()
+        Layer.init()
+        Layer.add('Background')
+        Physic.setInteractiveLayer('Background', 'Background', false)
 
         this.gameManager = GameManager.Instance()
         this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))

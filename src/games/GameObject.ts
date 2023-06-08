@@ -13,7 +13,7 @@ export type Transform = {
 export class GameObject extends Node {
     public transform: Transform
     private components: { [key: string]: Component }
-
+    public layer: string
 
     constructor() {
         super('GameObject')
@@ -22,6 +22,7 @@ export class GameObject extends Node {
             rotation: 0,
             scale: 1
         }
+        this.layer = 'Default'
         this.components = {}
     }
 

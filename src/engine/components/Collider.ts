@@ -3,6 +3,7 @@ import { Vector2 } from "../../utils/Vector2"
 import { Event } from "../event/Event"
 import { Physic } from "../system/Physic"
 import { Component } from "./Component"
+import { RigidBody } from "./RigidBody"
 import { Sprite } from "./Sprite"
 
 export class Collider extends Component {
@@ -44,6 +45,18 @@ export class Collider extends Component {
         if (this.isTrigger) {
             this.OnTriggerStay.invoke(collider)
         } else {
+
+            if (!this.gameObject.getComponent('RigidBody')) return
+            const thisRb = this.gameObject.getComponent('RigidBody') as RigidBody
+
+            if (thisRb.isStatic) return
+
+            const otherVelocity = collider.gameObject.getComponent('RigidBody') ?
+                (collider.gameObject.getComponent('RigidBody') as RigidBody).velocity : Vector2.zero
+
+            const bounceVelocity = otherVelocity.sub(thisRb.velocity.mul(Physic.bounciness))
+
+            thisRb.velocity = bounceVelocity.magnitude < 0.01 ? Vector2.zero : bounceVelocity
             this.OnCollisionStay.invoke(collider)
         }
     }
