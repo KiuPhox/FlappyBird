@@ -30,8 +30,6 @@ export class Game {
     private message: Message
     private static ground: Ground[]
 
-    private frameTime: number
-
     private static bgSprite: Sprite
     private static groundSprite: Sprite
 
@@ -45,8 +43,6 @@ export class Game {
         Time.init()
         UIManager.init()
         Canvas.init()
-
-        this.frameTime = 1000 / FRAME_RATE
 
         this.gameManager = GameManager.Instance()
         this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
@@ -80,7 +76,7 @@ export class Game {
     }
 
     private loop() {
-        if (Time.deltaTime >= this.frameTime / 1000) {
+        if (Time.deltaTime >= 1 / FRAME_RATE) {
             Physic.update() // Physic
             Game.update() // Update
             Canvas.draw() // Render
