@@ -1,3 +1,4 @@
+import { Collider } from "../engine/components/Collider"
 import { Component } from "../engine/components/Component"
 import { Node } from "../engine/system/Node"
 import { Vector2 } from "../utils/Vector2"
@@ -35,9 +36,22 @@ export class GameObject extends Node {
 
     public addComponent(component: Component): void {
         this.components[component.name] = component
+
+        if (component.name === 'Collider') {
+            (component as Collider).OnCollisionStay.subscribe(this.OnCollisionStay);
+            (component as Collider).OnTriggerStay.subscribe(this.OnTriggerStay)
+        }
     }
 
     public getComponent(name: string): Component {
         return this.components[name]
+    }
+
+    public OnTriggerStay(collider: Collider): void {
+        //
+    }
+
+    public OnCollisionStay(collider: Collider): void {
+        //
     }
 }

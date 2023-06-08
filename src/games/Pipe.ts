@@ -1,5 +1,5 @@
 import { Collider } from "../engine/components/Collider"
-import { Physic } from "../engine/components/Physic"
+import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
@@ -19,14 +19,13 @@ export class Pipe extends GameObject {
 
         this.addComponent(this.sprite)
         this.addComponent(new Collider(this))
-        this.addComponent(new Physic(this, 0))
+        this.addComponent(new RigidBody(this, 0))
         this.isCount = true
     }
 
     get center(): Vector2 {
         return new Vector2(this.transform.position.x + this.sprite.width / 2, this.transform.position.y + this.sprite.height / 2)
     }
-
 
     public setIsCount(value: boolean) {
         this.isCount = value

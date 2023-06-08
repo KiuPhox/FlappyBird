@@ -3,13 +3,13 @@ import { Time } from "../system/Time"
 import { Vector2 } from "../../utils/Vector2"
 import { Component } from "./Component"
 
-export class Physic extends Component {
+export class RigidBody extends Component {
     private _gravityScale: number
     private _velocity: Vector2
 
     constructor(gameObject: GameObject, gravityScale: number) {
         super(gameObject)
-        this._name = 'Physic'
+        this._name = 'RigidBody'
         this._gravityScale = gravityScale
         this._velocity = Vector2.zero
     }

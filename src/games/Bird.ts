@@ -1,6 +1,6 @@
 import { GameManager } from "./GameManager"
 import { Collider } from "../engine/components/Collider"
-import { Physic } from "../engine/components/Physic"
+import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
 import { GameState } from "../types/general"
 import { Vector2 } from "../utils/Vector2"
@@ -12,22 +12,22 @@ const BIRD_DOWN_SPRITE = 'assets/images/bird-down.png'
 
 export class Bird extends GameObject {
     private jumpStrength: number
-    private physic: Physic
+    private rigidBody: RigidBody
     private sprite: Sprite
     private collider: Collider
 
     constructor() {
         super()
         GameManager.Instance().OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
-
+        this.name = "Bird"
         this.jumpStrength = 4
 
-        this.physic = new Physic(this, 0)
+        this.rigidBody = new RigidBody(this, 0)
         this.sprite = new Sprite(this, 1)
         this.collider = new Collider(this)
         this.sprite.setSprite(BIRD_MID_SPRITE)
 
-        this.addComponent(this.physic)
+        this.addComponent(this.rigidBody)
         this.addComponent(this.sprite)
         this.addComponent(this.collider)
     }
@@ -39,19 +39,19 @@ export class Bird extends GameObject {
     }
 
     public jump(): void {
-        this.physic.velocity = new Vector2(this.physic.velocity.x, -this.jumpStrength)
+        this.rigidBody.velocity = new Vector2(this.rigidBody.velocity.x, -this.jumpStrength)
     }
 
     private rotateBaseOnGravity() {
-        this.transform.rotation = this.physic.velocity.y / 5
+        this.transform.rotation = this.rigidBody.velocity.y / 5
     }
 
     private updateAnimation() {
-        if (this.physic.velocity.y > 0.5) {
+        if (this.rigidBody.velocity.y > 0.5) {
             this.sprite.setSprite(BIRD_UP_SPRITE)
-        } else if (this.physic.velocity.y < 0.5 && this.physic.velocity.y > -1) {
+        } else if (this.rigidBody.velocity.y < 0.5 && this.rigidBody.velocity.y > -1) {
             this.sprite.setSprite(BIRD_MID_SPRITE)
-        } else if (this.physic.velocity.y < -1) {
+        } else if (this.rigidBody.velocity.y < -1) {
             this.sprite.setSprite(BIRD_DOWN_SPRITE)
         }
     }
@@ -60,12 +60,18 @@ export class Bird extends GameObject {
         switch (gameState) {
             case "Idle":
                 this.transform.position = Vector2.zero
-                this.physic.velocity = Vector2.zero
-                this.physic.gravityScale = 0
+                this.rigidBody.velocity = Vector2.zero
+                this.rigidBody.gravityScale = 0
                 break
             case "Start":
-                this.physic.gravityScale = 0.15
+                this.rigidBody.gravityScale = 0.15
                 break
+        }
+    }
+
+    public OnCollisionStay(collider: Collider): void {
+        if (GameManager.Instance().getGameState() == 'Start' && (collider.gameObject.name == "Ground" || collider.gameObject.name == "Pipe")) {
+            GameManager.Instance().updateGameState('GameOver')
         }
     }
 }

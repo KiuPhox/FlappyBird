@@ -4,12 +4,11 @@ import { Bird } from "./Bird"
 import { Utils } from "../utils/Utils"
 import { Collider } from "../engine/components/Collider"
 import { ScoreManager } from "./ScoreManager"
-import { GameManager } from "./GameManager"
 import { ObjectPool } from "../utils/ObjectPool"
 import { Time } from "../engine/system/Time"
 import { Node } from "../engine/system/Node"
 import { Canvas } from "../engine/system/Canvas"
-import { Physic } from "../engine/components/Physic"
+import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
 
 const PIPE_VELOCITTY = new Vector2(-1.7, 0)
@@ -34,7 +33,7 @@ export class PipeSpawner extends Node {
             () => {
                 const pipe = new Pipe()
                 pipe.parent = this;
-                (pipe.getComponent('Physic') as Physic).velocity = PIPE_VELOCITTY
+                (pipe.getComponent('RigidBody') as RigidBody).velocity = PIPE_VELOCITTY
                 this.pipes.push(pipe)
                 return pipe
             },
@@ -60,12 +59,6 @@ export class PipeSpawner extends Node {
                 ScoreManager.Instance().increaseScore()
             }
 
-            if (this.pipes) {
-                if ((this.pipes[i].getComponent('Collider') as Collider).isTouch(this.birdCollider)) {
-                    (GameManager.Instance() as GameManager).updateGameState("GameOver")
-                }
-            }
-
             if (this.pipes[i].active && this.pipes[i].transform.position.x + 50 < -Canvas.size.x) {
                 this.pipePool.release(this.pipes[i])
             }
@@ -81,7 +74,7 @@ export class PipeSpawner extends Node {
     public setIsSpawn(isActive: boolean): void {
         this.setActive(isActive)
         for (const pipe of this.pipes) {
-            (pipe.getComponent('Physic') as Physic).velocity = isActive ? PIPE_VELOCITTY : Vector2.zero
+            (pipe.getComponent('RigidBody') as RigidBody).velocity = isActive ? PIPE_VELOCITTY : Vector2.zero
         }
     }
 
@@ -90,7 +83,7 @@ export class PipeSpawner extends Node {
         pipeUp.setActive(true)
         pipeUp.setIsCount(true);
         (pipeUp.getComponent('Sprite') as Sprite).flipY = false
-        pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(50, 180))
+        pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(60, 220))
 
         const pipeDown = this.pipePool.get()
         pipeDown.transform.position = new Vector2(this.spawnPos.x, pipeUp.transform.position.y - 430)

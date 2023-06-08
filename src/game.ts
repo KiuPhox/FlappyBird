@@ -15,8 +15,9 @@ import { Node } from "./engine/system/Node"
 import { Canvas } from "./engine/system/Canvas"
 import { Vector2 } from "./utils/Vector2"
 import { ScoreManager } from "./games/ScoreManager"
-import { Physic } from "./engine/components/Physic"
+import { RigidBody } from "./engine/components/RigidBody"
 import { UIManager } from "./engine/UI/UIManager"
+import { Physic } from "./engine/system/Physic"
 
 const FRAME_RATE = 200
 
@@ -62,7 +63,7 @@ export class Game {
         this.gameOver = new GameOver()
         this.message = new Message()
         this.message.transform.position = new Vector2(0, 60)
-        Game.ground = Array.from({ length: 2 }, () => new Ground(this.bird))
+        Game.ground = Array.from({ length: 2 }, () => new Ground())
         Game.groundSprite = Game.ground[0].getComponent('Sprite') as Sprite
 
         this.playAgainButton = new PlayAgainButton()
@@ -81,6 +82,7 @@ export class Game {
         const deltaTime = time - Game.lastFrameTime
 
         if (deltaTime >= this.frameTime) {
+            Physic.update()
             Game.update() // Update
             Canvas.draw() // Render
             Game.lastFrameTime = time
@@ -110,6 +112,7 @@ export class Game {
         for (let i = 0; i < this.nodes.length; i++) {
             this.nodes[i].executeUpdate()
         }
+
         if (this.gameState == "Start" || this.gameState == "Idle") {
             this.bg[1].transform.position = new Vector2(this.bg[0].transform.position.x + this.bgSprite.width, 0)
             if (this.bg[0].transform.position.x + this.bgSprite.width <= 0) {
@@ -149,8 +152,8 @@ export class Game {
                 this.gameOver.setActive(false)
                 this.playAgainButton.setActive(false)
                 this.message.setActive(true);
-                (Game.bg[0].getComponent('Physic') as Physic).velocity = new Vector2(-0.5, 0);
-                (Game.ground[0].getComponent('Physic') as Physic).velocity = new Vector2(-1.7, 0)
+                (Game.bg[0].getComponent('RigidBody') as RigidBody).velocity = new Vector2(-0.5, 0);
+                (Game.ground[0].getComponent('RigidBody') as RigidBody).velocity = new Vector2(-1.7, 0)
                 this.pipeSpawner.clear()
                 this.pipeSpawner.setActive(false)
                 ScoreManager.Instance().reset()
@@ -160,8 +163,8 @@ export class Game {
                 this.message.setActive(false)
                 break
             case "GameOver":
-                (Game.bg[0].getComponent('Physic') as Physic).velocity = Vector2.zero;
-                (Game.ground[0].getComponent('Physic') as Physic).velocity = Vector2.zero
+                (Game.bg[0].getComponent('RigidBody') as RigidBody).velocity = Vector2.zero;
+                (Game.ground[0].getComponent('RigidBody') as RigidBody).velocity = Vector2.zero
                 this.pipeSpawner.setIsSpawn(false)
                 this.gameOver.setActive(true)
                 this.playAgainButton.setActive(true)
