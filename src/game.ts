@@ -19,7 +19,7 @@ import { RigidBody } from "./engine/components/RigidBody"
 import { UIManager } from "./engine/UI/UIManager"
 import { Physic } from "./engine/system/Physic"
 
-const FRAME_RATE = 200
+const FRAME_RATE = 120
 
 export class Game {
     private bird: Bird
@@ -30,9 +30,7 @@ export class Game {
     private message: Message
     private static ground: Ground[]
 
-    private fps: number
     private frameTime: number
-    private static lastFrameTime: number
 
     private static bgSprite: Sprite
     private static groundSprite: Sprite
@@ -48,9 +46,7 @@ export class Game {
         UIManager.init()
         Canvas.init()
 
-        this.fps = FRAME_RATE
-        this.frameTime = 1000 / this.fps
-        Game.lastFrameTime = 0
+        this.frameTime = 1000 / FRAME_RATE
 
         this.gameManager = GameManager.Instance()
         this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
@@ -70,7 +66,6 @@ export class Game {
         Game.groundSprite = Game.ground[0].getComponent('Sprite') as Sprite
         Game.ground[0].transform.position = new Vector2(0, 200)
 
-
         // UI Elements
         this.message = new Message()
         this.playAgainButton = new PlayAgainButton()
@@ -85,16 +80,11 @@ export class Game {
     }
 
     private loop() {
-        const time = window.performance.now()
-        Time.lastFrameTime = Game.lastFrameTime
-
-        const deltaTime = time - Game.lastFrameTime
-
-        if (deltaTime >= this.frameTime) {
+        if (Time.deltaTime >= this.frameTime / 1000) {
             Physic.update() // Physic
             Game.update() // Update
             Canvas.draw() // Render
-            Game.lastFrameTime = time
+            Time.lastFrameTime = window.performance.now()
         }
 
         window.requestAnimationFrame(() => {

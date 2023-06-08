@@ -4,7 +4,9 @@ export class Time {
 
     public static init() {
         Time.startTime = window.performance.now()
+        Time.lastFrameTime = 0
     }
+
 
     static get time(): number {
         return (window.performance.now() - Time.startTime) / 1000
