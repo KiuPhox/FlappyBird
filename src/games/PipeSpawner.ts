@@ -10,6 +10,7 @@ import { Time } from "../engine/system/Time"
 import { Node } from "../engine/system/Node"
 import { Canvas } from "../engine/system/Canvas"
 import { Physic } from "../engine/components/Physic"
+import { Sprite } from "../engine/components/Sprite"
 
 const PIPE_VELOCITTY = new Vector2(-1.7, 0)
 
@@ -59,7 +60,7 @@ export class PipeSpawner extends Node {
                 ScoreManager.Instance().increaseScore()
             }
 
-            if (this.pipes[i].getIsCount() && this.pipes) {
+            if (this.pipes) {
                 if ((this.pipes[i].getComponent('Collider') as Collider).isTouch(this.birdCollider)) {
                     (GameManager.Instance() as GameManager).updateGameState("GameOver")
                 }
@@ -87,14 +88,14 @@ export class PipeSpawner extends Node {
     private spawn(): void {
         const pipeUp = this.pipePool.get()
         pipeUp.setActive(true)
-        pipeUp.setIsCount(true)
-        pipeUp.transform.rotation = 0
+        pipeUp.setIsCount(true);
+        (pipeUp.getComponent('Sprite') as Sprite).flipY = false
         pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(50, 180))
 
         const pipeDown = this.pipePool.get()
         pipeDown.transform.position = new Vector2(this.spawnPos.x, pipeUp.transform.position.y - 430)
         pipeDown.setActive(true)
-        pipeDown.setIsCount(false)
-        pipeDown.transform.rotation = Math.PI
+        pipeDown.setIsCount(false);
+        (pipeDown.getComponent('Sprite') as Sprite).flipY = true
     }
 }

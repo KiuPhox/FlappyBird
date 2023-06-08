@@ -32,9 +32,19 @@ export class Canvas {
             const drawX = gameObject.transform.position.x + canvasCenterX
             const drawY = gameObject.transform.position.y + canvasCenterY
 
+
             Canvas.context.save()
             Canvas.context.translate(drawX, drawY)
             Canvas.context.rotate(gameObject.transform.rotation)
+
+            if (sprite.flipX) {
+                Canvas.context.scale(-1, 1)
+            }
+
+            if (sprite.flipY) {
+                Canvas.context.scale(1, -1)
+            }
+
             Canvas.context.drawImage(
                 sprite.image,
                 -spriteCenterX,
@@ -42,6 +52,7 @@ export class Canvas {
                 sprite.width * gameObject.transform.scale,
                 sprite.height * gameObject.transform.scale
             )
+
             Canvas.context.restore()
         }
     }

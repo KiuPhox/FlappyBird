@@ -24,6 +24,7 @@ export class Collider extends Component {
         const thisPos = this.gameObject.transform.position
         const colPos = col.gameObject.transform.position
 
+
         return (
             thisPos.x + this.size.x / 2 > colPos.x - col.size.x / 2 &&
             thisPos.x - this.size.x / 2 < colPos.x + col.size.x / 2 &&

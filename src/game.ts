@@ -35,7 +35,6 @@ export class Game {
 
     private static bgSprite: Sprite
     private static groundSprite: Sprite
-    private gameOverSprite: Sprite
 
     private playAgainButton: PlayAgainButton
 

@@ -11,14 +11,14 @@ export class Pipe extends GameObject {
 
     constructor() {
         super()
+        this.name = "Pipe"
         this.transform.position = Vector2.zero
 
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite('assets/images/pipe-green.png')
+
         this.addComponent(this.sprite)
-
         this.addComponent(new Collider(this))
-
         this.addComponent(new Physic(this, 0))
         this.isCount = true
     }

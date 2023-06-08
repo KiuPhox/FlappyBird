@@ -5,12 +5,16 @@ import { Component } from "./Component"
 export class Sprite extends Component {
     private _image: HTMLImageElement
     private _order: number
+    public flipX: boolean
+    public flipY: boolean
 
     constructor(gameObject: GameObject, order: number) {
         super(gameObject)
         this._image = new Image()
         this._order = order
         this._name = 'Sprite'
+        this.flipX = false
+        this.flipY = false
 
         Canvas.registerSprite(this)
     }
