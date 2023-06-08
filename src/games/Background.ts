@@ -1,5 +1,5 @@
-import { Physic } from "../components/Physic"
-import { Sprite } from "../components/Sprite"
+import { Physic } from "../engine/components/Physic"
+import { Sprite } from "../engine/components/Sprite"
 import { GameObject } from "./GameObject"
 
 export default class Background extends GameObject {

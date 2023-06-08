@@ -1,6 +1,6 @@
 import { UIManager } from "../UI/UIManager"
 import { Sprite } from "../components/Sprite"
-import { Vector2 } from "../utils/Vector2"
+import { Vector2 } from "../../utils/Vector2"
 
 export class Canvas {
 

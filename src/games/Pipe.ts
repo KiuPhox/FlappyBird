@@ -1,6 +1,6 @@
-import { Collider } from "../components/Collider"
-import { Physic } from "../components/Physic"
-import { Sprite } from "../components/Sprite"
+import { Collider } from "../engine/components/Collider"
+import { Physic } from "../engine/components/Physic"
+import { Sprite } from "../engine/components/Sprite"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
 

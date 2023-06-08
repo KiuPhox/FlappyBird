@@ -1,7 +1,7 @@
 import { GameManager } from "../GameManager"
-import { Collider } from "../components/Collider"
-import { Physic } from "../components/Physic"
-import { Sprite } from "../components/Sprite"
+import { Collider } from "../engine/components/Collider"
+import { Physic } from "../engine/components/Physic"
+import { Sprite } from "../engine/components/Sprite"
 import { GameState } from "../types/general"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
@@ -18,7 +18,7 @@ export class Bird extends GameObject {
 
     constructor() {
         super()
-        GameManager.Instance().OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
+        GameManager.Instance().OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
 
         this.jumpStrength = 4
 

@@ -1,4 +1,4 @@
-import { GameObject } from "../games/GameObject"
+import { GameObject } from "../../games/GameObject"
 import { Canvas } from "../system/Canvas"
 import { Component } from "./Component"
 

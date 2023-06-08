@@ -1,5 +1,5 @@
-import { GameObject } from "../games/GameObject"
-import { Vector2 } from "../utils/Vector2"
+import { GameObject } from "../../games/GameObject"
+import { Vector2 } from "../../utils/Vector2"
 import { Component } from "./Component"
 import { Sprite } from "./Sprite"
 

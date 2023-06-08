@@ -1,5 +1,5 @@
-import { Component } from "../components/Component"
-import { Node } from "../system/Node"
+import { Component } from "../engine/components/Component"
+import { Node } from "../engine/system/Node"
 import { Vector2 } from "../utils/Vector2"
 
 

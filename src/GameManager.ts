@@ -5,10 +5,10 @@ export class GameManager {
     private gameState: GameState
     private static instance: GameManager
 
-    public OnGameStateChanged: Event
+    public OnGameStateChanged: Event<GameState>
 
     constructor() {
-        this.OnGameStateChanged = new Event()
+        this.OnGameStateChanged = new Event<GameState>()
     }
 
     public static Instance(): GameManager {

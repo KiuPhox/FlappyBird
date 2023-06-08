@@ -1,6 +1,6 @@
-import { GameObject } from "../games/GameObject"
+import { GameObject } from "../../games/GameObject"
 import { Time } from "../system/Time"
-import { Vector2 } from "../utils/Vector2"
+import { Vector2 } from "../../utils/Vector2"
 import { Component } from "./Component"
 
 export class Physic extends Component {

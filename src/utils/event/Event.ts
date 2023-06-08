@@ -1,13 +1,11 @@
-import { Action } from "../../types/general"
+export class Event<T> {
+    private listeners: ((arg: T) => void)[] = []
 
-export class Event {
-    private listeners: Action<any>[] = []
-
-    public subscribe(listener: Action<any>): void {
+    public subscribe(listener: (arg: T) => void): void {
         this.listeners.push(listener)
     }
 
-    public unsubscribe(listener: Action<any>): void {
+    public unsubscribe(listener: (arg: T) => void): void {
         const index = this.listeners.indexOf(listener)
         if (index !== -1) {
             this.listeners.splice(index, 1)

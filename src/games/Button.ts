@@ -1,6 +1,6 @@
-import { Sprite } from "../components/Sprite"
-import { GameObject } from "../games/GameObject"
-import { UIManager } from "./UIManager"
+import { Sprite } from "../engine/components/Sprite"
+import { GameObject } from "./GameObject"
+import { UIManager } from "../engine/UI/UIManager"
 
 export abstract class Button extends GameObject {
     private sprite: Sprite

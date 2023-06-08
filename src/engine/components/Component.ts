@@ -1,4 +1,4 @@
-import { GameObject } from "../games/GameObject"
+import { GameObject } from "../../games/GameObject"
 
 export class Component {
     protected _name: string

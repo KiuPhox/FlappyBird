@@ -1,5 +1,5 @@
-import { GameManager } from "../GameManager"
-import { Button } from "./Button"
+import { GameManager } from "../../GameManager"
+import { Button } from "../../games/Button"
 
 export class PlayAgainButton extends Button {
     constructor() {

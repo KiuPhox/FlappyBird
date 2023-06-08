@@ -1,7 +1,7 @@
 import { GameManager } from "../GameManager"
-import { Collider } from "../components/Collider"
-import { Physic } from "../components/Physic"
-import { Sprite } from "../components/Sprite"
+import { Collider } from "../engine/components/Collider"
+import { Physic } from "../engine/components/Physic"
+import { Sprite } from "../engine/components/Sprite"
 import { Bird } from "./Bird"
 import { GameObject } from "./GameObject"
 

@@ -5,18 +5,18 @@ import { Ground } from "./games/Ground"
 import { Message } from "./games/Message"
 import { PipeSpawner } from "./games/PipeSpawner"
 import { Command, GameState } from "./types/general"
-import { Sprite } from "./components/Sprite"
+import { Sprite } from "./engine/components/Sprite"
 import { GameManager } from "./GameManager"
 import JumpCommand from "./utils/command/JumpCommand"
 import UpdateGameStateCommand from "./utils/command/UpdateGameStateCommand"
-import { PlayAgainButton } from "./UI/PlayAgainButton"
-import { Time } from "./system/Time"
-import { Node } from "./system/Node"
-import { Canvas } from "./system/Canvas"
+import { PlayAgainButton } from "./engine/UI/PlayAgainButton"
+import { Time } from "./engine/system/Time"
+import { Node } from "./engine/system/Node"
+import { Canvas } from "./engine/system/Canvas"
 import { Vector2 } from "./utils/Vector2"
 import { ScoreManager } from "./ScoreManager"
-import { Physic } from "./components/Physic"
-import { UIManager } from "./UI/UIManager"
+import { Physic } from "./engine/components/Physic"
+import { UIManager } from "./engine/UI/UIManager"
 
 const FRAME_RATE = 200
 
@@ -48,13 +48,12 @@ export class Game {
         UIManager.init()
         Canvas.init()
 
-
         this.fps = FRAME_RATE
         this.frameTime = 1000 / this.fps
         Game.lastFrameTime = 0
 
         this.gameManager = GameManager.Instance()
-        this.gameManager.OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
+        this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
 
         this.bird = new Bird()
         Game.bg = Array.from({ length: 2 }, () => new Background())
@@ -71,7 +70,6 @@ export class Game {
         this.playAgainButton.transform.position = new Vector2(0, 50)
 
         this.gameManager.updateGameState('Idle')
-
 
         this.start()
         this.loop()
