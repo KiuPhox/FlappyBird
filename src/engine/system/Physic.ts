@@ -1,7 +1,7 @@
 import { Collider } from "../components/Collider"
 import { Layer } from "./Layer"
 
-const BOUNCINESS = 0.9
+const BOUNCINESS = 0.75
 
 export class Physic {
     private static colliders: Collider[] = []
@@ -13,7 +13,6 @@ export class Physic {
     }
 
     public static registerInteractiveLayer(newLayer: string) {
-        console.log(newLayer)
         for (const layer of Layer.layers) {
             Physic.interactiveLayers[layer + ',' + newLayer] = true
             Physic.interactiveLayers[newLayer + ',' + layer] = true

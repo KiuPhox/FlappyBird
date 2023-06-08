@@ -56,7 +56,7 @@ export class Collider extends Component {
 
             const bounceVelocity = otherVelocity.sub(thisRb.velocity.mul(Physic.bounciness))
 
-            thisRb.velocity = bounceVelocity.magnitude < 0.01 ? Vector2.zero : bounceVelocity
+            thisRb.velocity = bounceVelocity.magnitude < 0.005 ? Vector2.zero : bounceVelocity
             this.OnCollisionStay.invoke(collider)
         }
     }

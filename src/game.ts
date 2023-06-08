@@ -19,7 +19,7 @@ import { Physic } from "./engine/system/Physic"
 import { Input } from "./engine/system/Input"
 import { Layer } from "./engine/system/Layer"
 
-const FRAME_RATE = 200
+const FRAME_RATE = 300
 
 export class Game {
     private static bg: Background[]
@@ -79,7 +79,7 @@ export class Game {
             Physic.update() // Physic
             Game.update() // Update
             Canvas.draw() // Render
-            Input.reset()
+            Input.reset() // Input End
             Time.lastFrameTime = window.performance.now()
         }
 
