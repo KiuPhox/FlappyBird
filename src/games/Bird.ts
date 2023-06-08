@@ -5,6 +5,7 @@ import { Sprite } from "../engine/components/Sprite"
 import { GameState } from "../types/general"
 import { Vector2 } from "../utils/Vector2"
 import { GameObject } from "./GameObject"
+import { Input } from "../engine/system/Input"
 
 const BIRD_UP_SPRITE = 'assets/images/bird-up.png'
 const BIRD_MID_SPRITE = 'assets/images/bird-mid.png'
@@ -34,6 +35,27 @@ export class Bird extends GameObject {
 
     public update(): void {
         super.update()
+
+        if (Input.getKeyDown('Space')) {
+            if (GameManager.Instance().getGameState() === 'Idle') {
+                this.jump()
+                GameManager.Instance().updateGameState('Start')
+            } else if (GameManager.Instance().getGameState() === 'Start') {
+                this.jump()
+            } else if (GameManager.Instance().getGameState() === 'GameOver') {
+                GameManager.Instance().updateGameState('Idle')
+            }
+        }
+
+        if (Input.getMouseDown()) {
+            if (GameManager.Instance().getGameState() === 'Idle') {
+                this.jump()
+                GameManager.Instance().updateGameState('Start')
+            } else if (GameManager.Instance().getGameState() === 'Start') {
+                this.jump()
+            }
+        }
+
         this.rotateBaseOnGravity()
         this.updateAnimation()
     }

@@ -4,11 +4,9 @@ import { GameOver } from "./games/GameOver"
 import { Ground } from "./games/Ground"
 import { Message } from "./games/Message"
 import { PipeSpawner } from "./games/PipeSpawner"
-import { Command, GameState } from "./types/general"
+import { GameState } from "./types/general"
 import { Sprite } from "./engine/components/Sprite"
 import { GameManager } from "./games/GameManager"
-import JumpCommand from "./utils/command/JumpCommand"
-import UpdateGameStateCommand from "./utils/command/UpdateGameStateCommand"
 import { PlayAgainButton } from "./games/PlayAgainButton"
 import { Time } from "./engine/system/Time"
 import { Node } from "./engine/system/Node"
@@ -18,8 +16,9 @@ import { ScoreManager } from "./games/ScoreManager"
 import { RigidBody } from "./engine/components/RigidBody"
 import { UIManager } from "./engine/UI/UIManager"
 import { Physic } from "./engine/system/Physic"
+import { Input } from "./engine/system/Input"
 
-const FRAME_RATE = 120
+const FRAME_RATE = 200
 
 export class Game {
     private bird: Bird
@@ -40,6 +39,7 @@ export class Game {
     private static nodes: Node[] = []
 
     constructor() {
+        Input.init()
         Time.init()
         UIManager.init()
         Canvas.init()
@@ -69,9 +69,8 @@ export class Game {
 
         this.gameManager.updateGameState('Idle')
 
-
-        document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
-        document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
+        // document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
+        // document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
         this.loop()
     }
 
@@ -80,6 +79,7 @@ export class Game {
             Physic.update() // Physic
             Game.update() // Update
             Canvas.draw() // Render
+            Input.reset()
             Time.lastFrameTime = window.performance.now()
         }
 
@@ -93,6 +93,7 @@ export class Game {
     }
 
     private static update(): void {
+
         for (let i = 0; i < this.nodes.length; i++) {
             this.nodes[i].executeUpdate()
         }
@@ -107,23 +108,6 @@ export class Game {
                 this.ground[0].transform.position = new Vector2(0, 200)
             }
         }
-    }
-
-    private inputHandler(event: KeyboardEvent | MouseEvent): void {
-        const isKeyboardEvent = event instanceof KeyboardEvent
-        const isMouseEvent = event instanceof MouseEvent
-
-        const commands: Command[] = []
-
-        if (Game.gameState === "Start" && ((isKeyboardEvent && event.code === 'Space') || isMouseEvent)) {
-            commands.push(new JumpCommand(this.bird))
-        } else if (Game.gameState === "Idle" && ((isKeyboardEvent && event.code === 'Space') || isMouseEvent)) {
-            commands.push(new JumpCommand(this.bird))
-            commands.push(new UpdateGameStateCommand("Start"))
-        } else if (Game.gameState === "GameOver" && (isKeyboardEvent && event.code === 'Space')) {
-            commands.push(new UpdateGameStateCommand("Idle"))
-        }
-        commands.forEach(command => command.execute())
     }
 
     private OnGameStateChanged(gameState: GameState): void {
