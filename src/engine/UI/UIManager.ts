@@ -1,4 +1,4 @@
-import { Button } from "../../games/Button"
+import { Button } from "./Button"
 
 export class UIManager {
     private static _buttons: Button[]

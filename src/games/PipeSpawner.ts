@@ -1,8 +1,6 @@
 import { Vector2 } from "../utils/Vector2"
 import { Pipe } from "./Pipe"
-import { Bird } from "./Bird"
 import { Utils } from "../utils/Utils"
-import { Collider } from "../engine/components/Collider"
 import { ScoreManager } from "./ScoreManager"
 import { ObjectPool } from "../utils/ObjectPool"
 import { Time } from "../engine/system/Time"
@@ -18,16 +16,14 @@ export class PipeSpawner extends Node {
     private spawnBetweenTime: number
     private spawnTimer: number
     private pipes: Pipe[]
-    private birdCollider: Collider
     private pipePool: ObjectPool<Pipe>
 
-    constructor(spawnPos: Vector2, bird: Bird) {
+    constructor() {
         super('Pipe Spawner')
-        this.spawnPos = spawnPos
+        this.spawnPos = new Vector2(Canvas.size.x / 2 + 50, 0)
         this.spawnBetweenTime = 1
         this.spawnTimer = this.spawnBetweenTime
         this.pipes = []
-        this.birdCollider = bird.getComponent('Collider') as Collider
 
         this.pipePool = new ObjectPool<Pipe>(
             () => {

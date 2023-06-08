@@ -55,23 +55,32 @@ export class Game {
         this.gameManager = GameManager.Instance()
         this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
 
+        // Bird
         this.bird = new Bird()
+
+        // Background
         Game.bg = Array.from({ length: 2 }, () => new Background())
         Game.bgSprite = Game.bg[0].getComponent('Sprite') as Sprite
 
-        this.pipeSpawner = new PipeSpawner(new Vector2(Canvas.size.x / 2 + 50, 0), this.bird)
-        this.gameOver = new GameOver()
-        this.message = new Message()
-        this.message.transform.position = new Vector2(0, 60)
+        // Pipe
+        this.pipeSpawner = new PipeSpawner()
+
+        // Ground
         Game.ground = Array.from({ length: 2 }, () => new Ground())
         Game.groundSprite = Game.ground[0].getComponent('Sprite') as Sprite
+        Game.ground[0].transform.position = new Vector2(0, 200)
 
+
+        // UI Elements
+        this.message = new Message()
         this.playAgainButton = new PlayAgainButton()
-        this.playAgainButton.transform.position = new Vector2(0, 50)
+        this.gameOver = new GameOver()
 
         this.gameManager.updateGameState('Idle')
 
-        this.start()
+
+        document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
+        document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
         this.loop()
     }
 
@@ -82,7 +91,7 @@ export class Game {
         const deltaTime = time - Game.lastFrameTime
 
         if (deltaTime >= this.frameTime) {
-            Physic.update()
+            Physic.update() // Physic
             Game.update() // Update
             Canvas.draw() // Render
             Game.lastFrameTime = time
@@ -95,17 +104,6 @@ export class Game {
 
     public static registerNode(node: Node): void {
         Game.nodes.push(node)
-    }
-
-    private start(): void {
-        this.OnGameStateChanged('Idle')
-
-        Game.ground[0].transform.position = new Vector2(0, 200)
-        this.playAgainButton.transform.scale = 0.3
-
-
-        document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
-        document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
     }
 
     private static update(): void {
