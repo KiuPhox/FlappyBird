@@ -8,6 +8,8 @@ export class Input {
         document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
         document.addEventListener('mousedown', () => this.handleMouseDown())
         document.addEventListener('mouseup', () => this.handleMouseUp())
+        document.addEventListener('touchstart', () => this.handleMouseDown())
+        document.addEventListener('touchend', () => this.handleMouseUp())
         this.isHeld = false
     }
 

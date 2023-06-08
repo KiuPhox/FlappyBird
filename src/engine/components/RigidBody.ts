@@ -51,7 +51,7 @@ export class RigidBody extends Component {
         if (this._gravityScale) {
             this._velocity = this._velocity.add(new Vector2(0, this._gravityScale * GRAVITY_ACCELERATION).mul(Time.deltaTime))
         }
-        if (this.velocity.magnitude > 0.1)
+        if (this.velocity.magnitude > 0.5)
             this._gameObject.transform.position = this._gameObject.transform.position.add(this._velocity.mul(Time.deltaTime * GRAVITY_ACCELERATION))
     }
 }

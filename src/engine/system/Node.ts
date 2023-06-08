@@ -12,13 +12,10 @@ export abstract class Node {
         this.isActive = true
     }
 
-    public start(): void {
-        // Start
-    }
-
-    public update(): void {
-        // Update
-    }
+    public start(): void { /**/ }
+    public update(): void { /**/ }
+    public onEnabled(): void { /**/ }
+    public onDisabled(): void { /**/ }
 
     public executeStart(): void {
         this.start()
@@ -46,5 +43,10 @@ export abstract class Node {
     }
 
     get active(): boolean { return this.isActive }
-    public setActive(value: boolean): void { this.isActive = value }
+    public setActive(value: boolean): void {
+        this.isActive = value
+
+        if (this.active) this.onEnabled
+        else (this.onDisabled)
+    }
 }
