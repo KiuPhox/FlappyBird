@@ -6,8 +6,8 @@ export class Input {
     public static init(): void {
         document.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
         document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
-        document.addEventListener('mousedown', (event: MouseEvent) => this.handleMouseDown())
-        document.addEventListener('mouseup', (event: MouseEvent) => this.handleMouseUp())
+        document.addEventListener('mousedown', () => this.handleMouseDown())
+        document.addEventListener('mouseup', () => this.handleMouseUp())
         this.isHeld = false
     }
 

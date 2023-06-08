@@ -21,7 +21,6 @@ import { Input } from "./engine/system/Input"
 const FRAME_RATE = 200
 
 export class Game {
-    private bird: Bird
     private static bg: Background[]
     private pipeSpawner: PipeSpawner
     private static gameState: GameState
@@ -48,7 +47,7 @@ export class Game {
         this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
 
         // Bird
-        this.bird = new Bird()
+        new Bird()
 
         // Background
         Game.bg = Array.from({ length: 2 }, () => new Background())
@@ -68,9 +67,6 @@ export class Game {
         this.gameOver = new GameOver()
 
         this.gameManager.updateGameState('Idle')
-
-        // document.addEventListener('keydown', (event: KeyboardEvent) => this.inputHandler(event))
-        // document.addEventListener('mousedown', (event: MouseEvent) => this.inputHandler(event))
         this.loop()
     }
 

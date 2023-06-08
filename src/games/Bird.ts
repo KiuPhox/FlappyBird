@@ -1,6 +1,6 @@
 import { GameManager } from "./GameManager"
 import { Collider } from "../engine/components/Collider"
-import { RigidBody } from "../engine/components/RigidBody"
+import { ForceMode, RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
 import { GameState } from "../types/general"
 import { Vector2 } from "../utils/Vector2"
@@ -12,7 +12,7 @@ const BIRD_MID_SPRITE = 'assets/images/bird-mid.png'
 const BIRD_DOWN_SPRITE = 'assets/images/bird-down.png'
 
 export class Bird extends GameObject {
-    private jumpStrength: number
+    private jumpForce: number
     private rigidBody: RigidBody
     private sprite: Sprite
     private collider: Collider
@@ -21,7 +21,7 @@ export class Bird extends GameObject {
         super()
         GameManager.Instance().OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
         this.name = "Bird"
-        this.jumpStrength = 4.3
+        this.jumpForce = 4.3
 
         this.rigidBody = new RigidBody(this, 0)
         this.sprite = new Sprite(this, 1)
@@ -60,8 +60,8 @@ export class Bird extends GameObject {
         this.updateAnimation()
     }
 
-    public jump(): void {
-        this.rigidBody.velocity = new Vector2(this.rigidBody.velocity.x, -this.jumpStrength)
+    private jump(): void {
+        this.rigidBody.addForce(Vector2.up.mul(this.jumpForce), ForceMode.VelocityChange)
     }
 
     private rotateBaseOnGravity() {

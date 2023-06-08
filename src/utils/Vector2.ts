@@ -22,4 +22,8 @@ export class Vector2 {
     static get zero(): Vector2 {
         return new Vector2(0, 0)
     }
+
+    static get up(): Vector2 {
+        return new Vector2(0, 1)
+    }
 }
