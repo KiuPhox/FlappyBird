@@ -16,16 +16,19 @@ export class Collider extends Component {
         return new Vector2(sprite.width, sprite.height)
     }
 
-    public update(delta: number): void {
-        super.update(delta)
+    public update(): void {
+        super.update()
     }
 
     public isTouch(col: Collider) {
+        const thisPos = this.gameObject.transform.position
+        const colPos = col.gameObject.transform.position
+
         return (
-            this.gameObject.transform.position.x < col.gameObject.transform.position.x + col.size.x &&
-            this.gameObject.transform.position.x + this.size.x > col.gameObject.transform.position.x &&
-            this.gameObject.transform.position.y < col.gameObject.transform.position.y + col.size.y &&
-            this.gameObject.transform.position.y + this.size.y > col.gameObject.transform.position.y
+            thisPos.x + this.size.x / 2 > colPos.x - col.size.x / 2 &&
+            thisPos.x - this.size.x / 2 < colPos.x + col.size.x / 2 &&
+            thisPos.y + this.size.y / 2 > colPos.y - col.size.y / 2 &&
+            thisPos.y - this.size.y / 2 < colPos.y + col.size.y / 2
         )
     }
 }

@@ -1,7 +1,6 @@
 import { Sprite } from "./components/Sprite"
 import { GameObject } from "./games/GameObject"
 import { Vector2 } from "./utils/Vector2"
-import { Render } from "./Render"
 
 export class ScoreManager {
     private _score: number
@@ -21,15 +20,14 @@ export class ScoreManager {
             this.sprites[i] = new Sprite(this.digits[i], 0)
             this.digits[i].addComponent(this.sprites[i])
             this.sprites[i].setSprite("/assets/images/0.png")
-            Render.Instance().add(this.digits[i])
         }
 
 
-        this.digits[0].transform.position = new Vector2(120, 30)
-        this.digits[1].transform.position = new Vector2(this.digits[0].transform.position.x + 25, 30)
+        this.digits[0].transform.position = new Vector2(-10, -200)
+        this.digits[1].transform.position = new Vector2(this.digits[0].transform.position.x + 25, this.digits[0].transform.position.y)
 
-        this.digits[2].transform.position = new Vector2(145, 70)
-        this.digits[3].transform.position = new Vector2(130, 70)
+        this.digits[2].transform.position = new Vector2(-5, -160)
+        this.digits[3].transform.position = new Vector2(this.digits[2].transform.position.x + 15, this.digits[2].transform.position.y)
 
         this.digits[2].transform.scale = 0.6
         this.digits[3].transform.scale = 0.6
@@ -63,8 +61,8 @@ export class ScoreManager {
     private numberToDigits(): void {
         this.sprites[1].setSprite(`/assets/images/${this._score % 10}.png`)
         this.sprites[0].setSprite(`/assets/images/${Math.floor(this._score / 10)}.png`)
-        this.sprites[2].setSprite(`/assets/images/${this.highScore % 10}.png`)
-        this.sprites[3].setSprite(`/assets/images/${Math.floor(this.highScore / 10)}.png`)
+        this.sprites[3].setSprite(`/assets/images/${this.highScore % 10}.png`)
+        this.sprites[2].setSprite(`/assets/images/${Math.floor(this.highScore / 10)}.png`)
     }
 }
 

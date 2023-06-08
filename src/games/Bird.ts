@@ -1,6 +1,4 @@
-import { CanvasView } from "../CanvasView"
 import { GameManager } from "../GameManager"
-import { Render } from "../Render"
 import { Collider } from "../components/Collider"
 import { Physic } from "../components/Physic"
 import { Sprite } from "../components/Sprite"
@@ -20,7 +18,6 @@ export class Bird extends GameObject {
 
     constructor() {
         super()
-
         GameManager.Instance().OnGameStateChanged.subscribe((gameState) => this.OnGameStateChanged(gameState))
 
         this.jumpStrength = 4
@@ -33,12 +30,10 @@ export class Bird extends GameObject {
         this.addComponent(this.physic)
         this.addComponent(this.sprite)
         this.addComponent(this.collider)
-
-        Render.Instance().add(this)
     }
 
-    public update(delta: number): void {
-        super.update(delta)
+    public update(): void {
+        super.update()
         this.rotateBaseOnGravity()
         this.updateAnimation()
     }
@@ -64,11 +59,7 @@ export class Bird extends GameObject {
     private OnGameStateChanged(gameState: GameState) {
         switch (gameState) {
             case "Idle":
-                this.transform.position = new Vector2(
-                    CanvasView.Instance().width / 2 - this.sprite.width / 2,
-                    CanvasView.Instance().height / 2 - this.sprite.height / 2
-                )
-
+                this.transform.position = Vector2.zero
                 this.physic.velocity = Vector2.zero
                 this.physic.gravityScale = 0
                 break

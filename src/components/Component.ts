@@ -16,7 +16,7 @@ export class Component {
         return this._name
     }
 
-    update(delta: number) {
+    update() {
         // Update
     }
 }

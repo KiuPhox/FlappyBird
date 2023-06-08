@@ -1,4 +1,3 @@
-import { Render } from "../Render"
 import { Sprite } from "../components/Sprite"
 import { GameObject } from "../games/GameObject"
 import { UIManager } from "./UIManager"
@@ -11,8 +10,7 @@ export abstract class Button extends GameObject {
         this.sprite = new Sprite(this, 0)
         this.sprite.setSprite(src)
         this.addComponent(this.sprite)
-        Render.Instance().add(this)
-        UIManager.Instance().add(this)
+        UIManager.add(this)
     }
 
     get width(): number { return this.sprite.width * this.transform.scale }

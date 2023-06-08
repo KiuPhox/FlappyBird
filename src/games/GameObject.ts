@@ -1,5 +1,7 @@
 import { Component } from "../components/Component"
+import { Node } from "../system/Node"
 import { Vector2 } from "../utils/Vector2"
+
 
 export type Transform = {
     position: Vector2
@@ -7,28 +9,26 @@ export type Transform = {
     scale: number
 }
 
-
-export class GameObject {
-    private _transform: Transform
+export class GameObject extends Node {
+    public transform: Transform
     private components: { [key: string]: Component }
-    private isActive: boolean
+
 
     constructor() {
-        this._transform = {
-            position: Vector2.zero,
+        super('GameObject')
+        this.transform = {
+            position: new Vector2(0, 0),
             rotation: 0,
             scale: 1
         }
-        this.isActive = true
         this.components = {}
     }
 
-    get transform(): Transform { return this._transform }
-
-    public update(delta: number): void {
+    public update(): void {
+        super.update()
         for (const key in this.components) {
             if (this.active) {
-                this.components[key].update(delta)
+                this.components[key].update()
             }
         }
     }
@@ -40,7 +40,4 @@ export class GameObject {
     public getComponent(name: string): Component {
         return this.components[name]
     }
-
-    get active(): boolean { return this.isActive }
-    public setActive(value: boolean): void { this.isActive = value }
 }

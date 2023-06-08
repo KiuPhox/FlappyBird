@@ -1,4 +1,5 @@
 import { GameObject } from "../games/GameObject"
+import { Canvas } from "../system/Canvas"
 import { Component } from "./Component"
 
 export class Sprite extends Component {
@@ -10,6 +11,8 @@ export class Sprite extends Component {
         this._image = new Image()
         this._order = order
         this._name = 'Sprite'
+
+        Canvas.registerSprite(this)
     }
 
     public setSprite(sprite: string) {

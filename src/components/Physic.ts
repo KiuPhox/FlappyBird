@@ -1,4 +1,5 @@
 import { GameObject } from "../games/GameObject"
+import { Time } from "../system/Time"
 import { Vector2 } from "../utils/Vector2"
 import { Component } from "./Component"
 
@@ -30,11 +31,11 @@ export class Physic extends Component {
     }
 
 
-    update(delta: number): void {
+    update(): void {
         if (this._gravityScale) {
-            this._velocity = this._velocity.add(new Vector2(0, this._gravityScale).mul(delta * 100))
+            this._velocity = this._velocity.add(new Vector2(0, this._gravityScale).mul(Time.deltaTime * 100))
         }
 
-        this._gameObject.transform.position = this._gameObject.transform.position.add(this._velocity.mul(delta * 100))
+        this._gameObject.transform.position = this._gameObject.transform.position.add(this._velocity.mul(Time.deltaTime * 100))
     }
 }

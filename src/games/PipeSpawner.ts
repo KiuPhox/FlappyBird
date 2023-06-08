@@ -1,4 +1,3 @@
-import { Render } from "../Render"
 import { Vector2 } from "../utils/Vector2"
 import { Pipe } from "./Pipe"
 import { Bird } from "./Bird"
@@ -7,8 +6,14 @@ import { Collider } from "../components/Collider"
 import { ScoreManager } from "../ScoreManager"
 import { GameManager } from "../GameManager"
 import { ObjectPool } from "../utils/ObjectPool"
+import { Time } from "../system/Time"
+import { Node } from "../system/Node"
+import { Canvas } from "../system/Canvas"
+import { Physic } from "../components/Physic"
 
-export class PipeSpawner {
+const PIPE_VELOCITTY = new Vector2(-1.7, 0)
+
+export class PipeSpawner extends Node {
     private spawnPos: Vector2
     private spawnBetweenTime: number
     private spawnTimer: number
@@ -17,6 +22,7 @@ export class PipeSpawner {
     private pipePool: ObjectPool<Pipe>
 
     constructor(spawnPos: Vector2, bird: Bird) {
+        super('Pipe Spawner')
         this.spawnPos = spawnPos
         this.spawnBetweenTime = 1
         this.spawnTimer = this.spawnBetweenTime
@@ -26,26 +32,29 @@ export class PipeSpawner {
         this.pipePool = new ObjectPool<Pipe>(
             () => {
                 const pipe = new Pipe()
+                pipe.parent = this;
+                (pipe.getComponent('Physic') as Physic).velocity = PIPE_VELOCITTY
                 this.pipes.push(pipe)
-                console.log('a')
                 return pipe
             },
-            (obj) => obj.setActive(false)
+            (obj) => {
+                obj.transform.position = new Vector2(this.spawnPos.x, this.spawnPos.y)
+                obj.setActive(false)
+            }
         )
     }
 
-    public update(delta: number) {
-        this.spawnTimer -= delta
+    public update() {
+        this.spawnTimer -= Time.deltaTime
+
         if (this.spawnTimer < 0) {
             this.spawnTimer = this.spawnBetweenTime
             this.spawn()
         }
-        console.log(this.pipes.length)
 
         for (let i = 0; i < this.pipes.length; i++) {
-            this.pipes[i].update(delta)
 
-            if (!this.pipes[i].getIsCount() && this.pipes[i].center.x < 150) {
+            if (!this.pipes[i].getIsCount() && this.pipes[i].transform.position.x < 0) {
                 this.pipes[i].setIsCount(true)
                 ScoreManager.Instance().increaseScore()
             }
@@ -56,26 +65,31 @@ export class PipeSpawner {
                 }
             }
 
-            if (this.pipes[i].active && this.pipes[i].transform.position.x + 50 < 0) {
+            if (this.pipes[i].active && this.pipes[i].transform.position.x + 50 < -Canvas.size.x) {
                 this.pipePool.release(this.pipes[i])
             }
         }
     }
 
-    public clear() {
-        for (const pipe of this.pipes) {
-            Render.Instance().remove(pipe)
+    public clear(): void {
+        for (let i = 0; i < this.pipes.length; i++) {
+            this.pipePool.release(this.pipes[i])
         }
-
-        this.pipes = []
     }
 
-    private spawn() {
+    public setIsSpawn(isActive: boolean): void {
+        this.setActive(isActive)
+        for (const pipe of this.pipes) {
+            (pipe.getComponent('Physic') as Physic).velocity = isActive ? PIPE_VELOCITTY : Vector2.zero
+        }
+    }
+
+    private spawn(): void {
         const pipeUp = this.pipePool.get()
-        pipeUp.setIsCount(true)
         pipeUp.setActive(true)
+        pipeUp.setIsCount(true)
         pipeUp.transform.rotation = 0
-        pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(180, 380))
+        pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(50, 180))
 
         const pipeDown = this.pipePool.get()
         pipeDown.transform.position = new Vector2(this.spawnPos.x, pipeUp.transform.position.y - 430)
