@@ -1,5 +1,5 @@
 import { Sprite } from "../components/Sprite"
-import { GameObject } from "../../games/GameObject"
+import { GameObject } from "../system/GameObject"
 import { UIManager } from "./UIManager"
 
 export abstract class Button extends GameObject {

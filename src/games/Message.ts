@@ -1,8 +1,8 @@
 import { Sprite } from "../engine/components/Sprite"
-import { GameState } from "../types/general"
-import { Vector2 } from "../utils/Vector2"
+import { GameState } from "./GameState"
+import { Vector2 } from "../engine/utils/Vector2"
 import { GameManager } from "./GameManager"
-import { GameObject } from "./GameObject"
+import { GameObject } from "../engine/system/GameObject"
 
 export class Message extends GameObject {
     private sprite: Sprite
@@ -18,10 +18,10 @@ export class Message extends GameObject {
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState){
-            case "Idle":
+            case GameState.Ready:
                 this.setActive(true)
                 break
-            case "Start":
+            case GameState.Playing:
                     this.setActive(false)
                     break
         }

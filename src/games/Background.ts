@@ -1,6 +1,6 @@
 import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
-import { GameObject } from "./GameObject"
+import { GameObject } from "../engine/system/GameObject"
 
 export default class Background extends GameObject {
     private sprite: Sprite

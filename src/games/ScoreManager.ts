@@ -1,6 +1,6 @@
 import { Sprite } from "../engine/components/Sprite"
-import { GameObject } from "./GameObject"
-import { Vector2 } from "../utils/Vector2"
+import { GameObject } from "../engine/system/GameObject"
+import { Vector2 } from "../engine/utils/Vector2"
 
 export class ScoreManager {
     private static score: number

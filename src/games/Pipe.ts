@@ -1,8 +1,8 @@
 import { Collider } from "../engine/components/Collider"
 import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
-import { Vector2 } from "../utils/Vector2"
-import { GameObject } from "./GameObject"
+import { Vector2 } from "../engine/utils/Vector2"
+import { GameObject } from "../engine/system/GameObject"
 
 
 export class Pipe extends GameObject {

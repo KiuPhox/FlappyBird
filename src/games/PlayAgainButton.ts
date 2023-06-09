@@ -1,7 +1,7 @@
 import { GameManager } from "./GameManager"
 import { Button } from "../engine/UI/Button"
-import { Vector2 } from "../utils/Vector2"
-import { GameState } from "../types/general"
+import { Vector2 } from "../engine/utils/Vector2"
+import { GameState } from "./GameState"
 
 export class PlayAgainButton extends Button {
     constructor() {
@@ -13,15 +13,15 @@ export class PlayAgainButton extends Button {
     }
 
     public onClick(): void {
-        GameManager.updateGameState('Idle')
+        GameManager.updateGameState(GameState.Ready)
     }
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState){
-            case "Idle":
+            case GameState.Ready:
                 this.setActive(false)
                 break
-            case "GameOver":
+            case GameState.GameOver:
                 this.setActive(true)
                 break
         }

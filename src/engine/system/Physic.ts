@@ -6,6 +6,7 @@ const BOUNCINESS = 0.75
 export class Physic {
     private static colliders: Collider[] = []
     private static interactiveLayers: { [id: string]: boolean } = {}
+
     static get bounciness(): number { return BOUNCINESS }
 
     public static registerCollider(collider: Collider) {
@@ -34,8 +35,8 @@ export class Physic {
             for (let j = i + 1; j < Physic.colliders.length; j++) {
                 if (this.checkInteractiveLayer(Physic.colliders[i].gameObject.layer, Physic.colliders[j].gameObject.layer) &&
                     this.checkCollider(Physic.colliders[i], Physic.colliders[j])) {
-                    Physic.colliders[i].callbackEvent(Physic.colliders[j])
-                    Physic.colliders[j].callbackEvent(Physic.colliders[i])
+                    Physic.colliders[i].colliding(Physic.colliders[j])
+                    Physic.colliders[j].colliding(Physic.colliders[i])
                 }
             }
         }
@@ -46,10 +47,10 @@ export class Physic {
         const bPos = b.gameObject.transform.position
 
         return (
-            aPos.x + a.size.x / 2 > bPos.x - b.size.x / 2 &&
-            aPos.x - a.size.x / 2 < bPos.x + b.size.x / 2 &&
-            aPos.y + a.size.y / 2 > bPos.y - b.size.y / 2 &&
-            aPos.y - a.size.y / 2 < bPos.y + b.size.y / 2
+            aPos.x + a.size.x / 2 >= bPos.x - b.size.x / 2 &&
+            aPos.x - a.size.x / 2 <= bPos.x + b.size.x / 2 &&
+            aPos.y + a.size.y / 2 >= bPos.y - b.size.y / 2 &&
+            aPos.y - a.size.y / 2 <= bPos.y + b.size.y / 2
         )
     }
 }

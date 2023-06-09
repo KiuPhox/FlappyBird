@@ -1,4 +1,4 @@
-import { GameObject } from "../../games/GameObject"
+import { GameObject } from "../system/GameObject"
 
 export class Component {
     public name: string

@@ -1,5 +1,5 @@
-import { GameObject } from "../../games/GameObject"
-import { Vector2 } from "../../utils/Vector2"
+import { GameObject } from "../system/GameObject"
+import { Vector2 } from "../utils/Vector2"
 import { Event } from "../event/Event"
 import { Physic } from "../system/Physic"
 import { Component } from "./Component"
@@ -28,31 +28,19 @@ export class Collider extends Component {
         super.update()
     }
 
-    public isTouch(col: Collider) {
-        const thisPos = this.gameObject.transform.position
-        const colPos = col.gameObject.transform.position
-
-
-        return (
-            thisPos.x + this.size.x / 2 > colPos.x - col.size.x / 2 &&
-            thisPos.x - this.size.x / 2 < colPos.x + col.size.x / 2 &&
-            thisPos.y + this.size.y / 2 > colPos.y - col.size.y / 2 &&
-            thisPos.y - this.size.y / 2 < colPos.y + col.size.y / 2
-        )
-    }
-
-    public callbackEvent(collider: Collider) {
+    public colliding(collider: Collider) {
         if (this.isTrigger) {
             this.OnTriggerStay.invoke(collider)
         } else {
 
-            if (!this.gameObject.getComponent('RigidBody')) return
             const thisRb = this.gameObject.getComponent('RigidBody') as RigidBody
+            if (!thisRb) return
 
             if (thisRb.isStatic) return
 
-            const otherVelocity = collider.gameObject.getComponent('RigidBody') ?
-                (collider.gameObject.getComponent('RigidBody') as RigidBody).velocity : Vector2.zero
+            const otherRb = collider.gameObject.getComponent('RigidBody') as RigidBody
+
+            const otherVelocity = otherRb ? otherRb.velocity : Vector2.zero
 
             const bounceVelocity = otherVelocity.sub(thisRb.velocity.mul(Physic.bounciness))
 

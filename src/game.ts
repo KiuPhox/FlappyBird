@@ -1,12 +1,12 @@
-import { GameState } from "./types/general"
 import { GameManager } from "./games/GameManager"
 import { Time } from "./engine/system/Time"
-import { Node } from "./engine/system/Node"
 import { Canvas } from "./engine/system/Canvas"
 import { UIManager } from "./engine/UI/UIManager"
 import { Physic } from "./engine/system/Physic"
 import { Input } from "./engine/system/Input"
 import { Layer } from "./engine/system/Layer"
+import { GameState } from "./games/GameState"
+import { GameObject } from "./engine/system/GameObject"
 
 const FRAME_RATE = 300
 
@@ -16,17 +16,17 @@ export class Game {
     // private message: Message
     // private playAgainButton: PlayAgainButton
 
-    private static nodes: Node[] = []
+    private static gameObjects: GameObject[] = []
 
     constructor() {
         Input.init()
         Time.init()
         UIManager.init()
-        Canvas.init()
+        Canvas.init('game')
         Layer.init()
 
         GameManager.init()
-        GameManager.updateGameState('Idle')
+        GameManager.updateGameState(GameState.Ready)
 
         this.loop()
     }
@@ -36,7 +36,7 @@ export class Game {
             Physic.update() // Physic
             Game.update() // Update
             Canvas.draw() // Render
-            Input.reset() // Input End
+            Input.reset() // Reset input
             Time.lastFrameTime = window.performance.now()
         }
 
@@ -45,15 +45,14 @@ export class Game {
         })
     }
 
-    public static registerNode(node: Node): void {
-        Game.nodes.push(node)
-    }
-
     private static update(): void {
-
-        for (let i = 0; i < this.nodes.length; i++) {
-            this.nodes[i].executeUpdate()
+        for (let i = 0; i < this.gameObjects.length; i++) {
+            this.gameObjects[i].executeUpdate()
         }
+    }
+    
+    public static registerGameObject(gameObject: GameObject): void {
+        Game.gameObjects.push(gameObject)
     }
 }
 

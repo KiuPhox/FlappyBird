@@ -1,42 +1,44 @@
-import { Vector2 } from "../utils/Vector2"
+import { Vector2 } from "../engine/utils/Vector2"
 import { Pipe } from "./Pipe"
-import { Utils } from "../utils/Utils"
+import { Utils } from "../engine/utils/Utils"
 import { ScoreManager } from "./ScoreManager"
-import { ObjectPool } from "../utils/ObjectPool"
+import { ObjectPool } from "../engine/utils/ObjectPool"
 import { Time } from "../engine/system/Time"
-import { Node } from "../engine/system/Node"
 import { Canvas } from "../engine/system/Canvas"
 import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
-import { GameState } from "../types/general"
+import { GameState } from "./GameState"
 import { GameManager } from "./GameManager"
+import { GameObject } from "../engine/system/GameObject"
 
 const PIPE_VELOCITTY = new Vector2(-1.7, 0)
+const SPAWN_POSITION = new Vector2(Canvas.size.x / 2 + 50, 0)
 
-export class PipeSpawner extends Node {
-    private spawnPos: Vector2
+export class PipeSpawner extends GameObject {
     private spawnBetweenTime: number
     private spawnTimer: number
     private pipes: Pipe[]
     private pipePool: ObjectPool<Pipe>
 
+
+
     constructor() {
         super('Pipe Spawner')
-        this.spawnPos = new Vector2(Canvas.size.x / 2 + 50, 0)
+
         this.spawnBetweenTime = 1
         this.spawnTimer = this.spawnBetweenTime
         this.pipes = []
 
         this.pipePool = new ObjectPool<Pipe>(
             () => {
-                const pipe = new Pipe()
-                pipe.parent = this;
+                const pipe = new Pipe();
+                //pipe.parent = this;
                 (pipe.getComponent('RigidBody') as RigidBody).velocity = PIPE_VELOCITTY
                 this.pipes.push(pipe)
                 return pipe
             },
             (obj) => {
-                obj.transform.position = new Vector2(this.spawnPos.x, this.spawnPos.y)
+                obj.transform.position = SPAWN_POSITION
                 obj.setActive(false)
             }
         )
@@ -84,11 +86,11 @@ export class PipeSpawner extends Node {
         pipeUp.setActive(true)
         pipeUp.setIsCount(true);
         (pipeUp.getComponent('Sprite') as Sprite).flipY = false
-        pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(60, 220))
+        pipeUp.transform.position = new Vector2(SPAWN_POSITION.x, Utils.Random(60, 220))
 
         // Create pipe has down direction
         const pipeDown = this.pipePool.get()
-        pipeDown.transform.position = new Vector2(this.spawnPos.x, pipeUp.transform.position.y - 430)
+        pipeDown.transform.position = new Vector2(SPAWN_POSITION.x, pipeUp.transform.position.y - 430)
         pipeDown.setActive(true)
         pipeDown.setIsCount(false);
         (pipeDown.getComponent('Sprite') as Sprite).flipY = true
@@ -96,14 +98,14 @@ export class PipeSpawner extends Node {
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState){
-            case 'Idle':
+            case GameState.Ready:
                 this.clear()
                 this.setActive(false)
                 break
-            case 'Start':
+            case GameState.Playing:
                 this.setIsSpawn(true)
                 break
-            case 'GameOver':
+            case GameState.GameOver:
                 this.setIsSpawn(false)
                 break
         }

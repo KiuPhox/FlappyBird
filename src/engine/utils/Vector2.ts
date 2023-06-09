@@ -36,4 +36,17 @@ export class Vector2 {
     get y(): number { return this._y }
 
     get magnitude(): number { return Math.sqrt(this.x * this.x + this.y * this.y) }
+
+    get normalize(): Vector2 {
+        const magnitude = this.magnitude
+        if (magnitude !== 0) {
+            return new Vector2(this._x / magnitude, this._y / magnitude)
+        }
+        return Vector2.zero
+    }
+
+    dot (other: Vector2): number {
+        return this._x * other._x + this._y * other._y
+    }
+
 }

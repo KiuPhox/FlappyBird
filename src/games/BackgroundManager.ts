@@ -1,16 +1,16 @@
 import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
-import { Node } from "../engine/system/Node"
-import { GameState } from "../types/general"
-import { Vector2 } from "../utils/Vector2"
+import { GameState } from "./GameState"
+import { Vector2 } from "../engine/utils/Vector2"
 import Background from "./Background"
 import { GameManager } from "./GameManager"
 import { Ground } from "./Ground"
+import { GameObject } from "../engine/system/GameObject"
 
 const BACKGROUND_SPEED= 0.5
 const GROUND_SPEED = 1.7
 
-export class BackgroundManager extends Node {
+export class BackgroundManager extends GameObject {
     private backgrounds: Background[]
     private backgroundSprite: Sprite
 
@@ -45,11 +45,11 @@ export class BackgroundManager extends Node {
     }
 
     OnGameStateChanged = (gameState: GameState) => {
-        if (gameState == "Idle"){
+        if (gameState === GameState.Ready){
             (this.backgrounds[0].getComponent('RigidBody') as RigidBody).velocity = Vector2.left.mul(BACKGROUND_SPEED);
             (this.grounds[0].getComponent('RigidBody') as RigidBody).velocity = Vector2.left.mul(GROUND_SPEED)
         }
-        else if (gameState == 'GameOver'){
+        else if (gameState === GameState.GameOver){
             (this.backgrounds[0].getComponent('RigidBody') as RigidBody).velocity = Vector2.zero;
             (this.grounds[0].getComponent('RigidBody') as RigidBody).velocity = Vector2.zero
         }

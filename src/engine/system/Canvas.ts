@@ -1,6 +1,6 @@
 import { UIManager } from "../UI/UIManager"
 import { Sprite } from "../components/Sprite"
-import { Vector2 } from "../../utils/Vector2"
+import { Vector2 } from "../utils/Vector2"
 
 export class Canvas {
 
@@ -9,8 +9,8 @@ export class Canvas {
     public static size: Vector2 = new Vector2(288, 500)
     private static sprites: Sprite[] = []
 
-    public static init() {
-        this.canvas = <HTMLCanvasElement>document.getElementById('game')
+    public static init(canvasName: string) {
+        this.canvas = <HTMLCanvasElement>document.getElementById(canvasName)
         this.canvas.width = Canvas.size.x
         this.canvas.height = Canvas.size.y
         this.canvas.addEventListener('click', Canvas.handleClick)

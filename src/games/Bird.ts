@@ -2,9 +2,9 @@ import { GameManager } from "./GameManager"
 import { Collider } from "../engine/components/Collider"
 import { ForceMode, RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
-import { GameState } from "../types/general"
-import { Vector2 } from "../utils/Vector2"
-import { GameObject } from "./GameObject"
+import { GameState } from "./GameState"
+import { Vector2 } from "../engine/utils/Vector2"
+import { GameObject } from "../engine/system/GameObject"
 import { Input } from "../engine/system/Input"
 
 const BIRD_UP_SPRITE = 'assets/images/bird-up.png'
@@ -19,7 +19,7 @@ export class Bird extends GameObject {
     constructor() {
         super('Bird')
         GameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
-        
+
         this.jumpForce = 4.3
 
         this.rigidBody = new RigidBody(this, 0)
@@ -33,23 +33,26 @@ export class Bird extends GameObject {
 
     public update(): void {
         super.update()
-
         if (Input.getKeyDown('Space')) {
-            if (GameManager.getGameState() === 'Idle') {
+            const gameState = GameManager.getGameState()
+
+            if (gameState === GameState.Ready) {
                 this.jump()
-                GameManager.updateGameState('Start')
-            } else if (GameManager.getGameState() === 'Start') {
+                GameManager.updateGameState(GameState.Playing)
+            } else if (gameState === GameState.Playing) {
                 this.jump()
-            } else if (GameManager.getGameState() === 'GameOver') {
-                GameManager.updateGameState('Idle')
+            } else if (gameState === GameState.GameOver) {
+                GameManager.updateGameState(GameState.Ready)
             }
         }
 
         if (Input.getMouseDown()) {
-            if (GameManager.getGameState() === 'Idle') {
+            const gameState = GameManager.getGameState()
+
+            if (gameState === GameState.Ready) {
                 this.jump()
-                GameManager.updateGameState('Start')
-            } else if (GameManager.getGameState() === 'Start') {
+                GameManager.updateGameState(GameState.Playing)
+            } else if (gameState === GameState.Playing) {
                 this.jump()
             }
         }
@@ -78,20 +81,20 @@ export class Bird extends GameObject {
 
     private OnGameStateChanged(gameState: GameState) {
         switch (gameState) {
-            case "Idle":
+            case GameState.Ready:
                 this.transform.position = Vector2.zero
                 this.rigidBody.velocity = Vector2.zero
                 this.rigidBody.gravityScale = 0
                 break
-            case "Start":
+            case GameState.Playing:
                 this.rigidBody.gravityScale = 0.15
                 break
         }
     }
 
     public OnCollisionStay(collider: Collider): void {
-        if (GameManager.getGameState() == 'Start' && (collider.gameObject.name == "Ground" || collider.gameObject.name == "Pipe")) {
-            GameManager.updateGameState('GameOver')
+        if (GameManager.getGameState() == GameState.Playing && (collider.gameObject.name == "Ground" || collider.gameObject.name == "Pipe")) {
+            GameManager.updateGameState(GameState.GameOver)
         }
     }
 }

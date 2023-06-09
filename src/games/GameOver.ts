@@ -1,7 +1,7 @@
 import { Sprite } from "../engine/components/Sprite"
-import { GameState } from "../types/general"
+import { GameState } from "./GameState"
 import { GameManager } from "./GameManager"
-import { GameObject } from "./GameObject"
+import { GameObject } from "../engine/system/GameObject"
 
 export class GameOver extends GameObject {
 
@@ -18,10 +18,10 @@ export class GameOver extends GameObject {
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState){
-            case "Idle":
+            case GameState.Ready:
                 this.setActive(false)
                 break
-            case "GameOver":
+            case GameState.GameOver:
                 this.setActive(true)
                 break
         }
