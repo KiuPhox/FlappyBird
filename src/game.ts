@@ -47,8 +47,9 @@ export class Game {
         Layer.add('Background')
         Physic.setInteractiveLayer('Background', 'Background', false)
 
-        this.gameManager = GameManager.Instance()
-        this.gameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
+        ScoreManager.init(0)
+        GameManager.init()
+        GameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
 
         // Bird
         new Bird()
@@ -70,7 +71,7 @@ export class Game {
         this.playAgainButton = new PlayAgainButton()
         this.gameOver = new GameOver()
 
-        this.gameManager.updateGameState('Idle')
+        GameManager.updateGameState('Idle')
         this.loop()
     }
 
@@ -124,7 +125,7 @@ export class Game {
                 (Game.ground[0].getComponent('RigidBody') as RigidBody).velocity = new Vector2(-1.7, 0)
                 this.pipeSpawner.clear()
                 this.pipeSpawner.setActive(false)
-                ScoreManager.Instance().reset()
+                ScoreManager.reset()
                 break
             case "Start":
                 this.pipeSpawner.setIsSpawn(true)

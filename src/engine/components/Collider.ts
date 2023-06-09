@@ -15,7 +15,7 @@ export class Collider extends Component {
     constructor(gameObject: GameObject) {
         super(gameObject)
         this.isTrigger = false
-        this._name = "Collider"
+        this.name = "Collider"
         Physic.registerCollider(this)
     }
 

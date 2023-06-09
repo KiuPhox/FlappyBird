@@ -52,7 +52,7 @@ export class PipeSpawner extends Node {
 
             if (!this.pipes[i].getIsCount() && this.pipes[i].transform.position.x < 0) {
                 this.pipes[i].setIsCount(true)
-                ScoreManager.Instance().increaseScore()
+                ScoreManager.increaseScore()
             }
 
             if (this.pipes[i].active && this.pipes[i].transform.position.x + 50 < -Canvas.size.x) {

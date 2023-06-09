@@ -10,6 +10,6 @@ export class PlayAgainButton extends Button {
     }
 
     public onClick(): void {
-        GameManager.Instance().updateGameState('Idle')
+        GameManager.updateGameState('Idle')
     }
 }

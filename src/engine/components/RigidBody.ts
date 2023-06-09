@@ -11,47 +11,31 @@ export enum ForceMode {
 }
 
 export class RigidBody extends Component {
-    private _gravityScale: number
-    private _velocity: Vector2
+    public gravityScale: number
+    public velocity: Vector2
     public isStatic: boolean
 
     constructor(gameObject: GameObject, gravityScale: number) {
         super(gameObject)
-        this._name = 'RigidBody'
-        this._gravityScale = gravityScale
-        this._velocity = Vector2.zero
+        this.name = 'RigidBody'
+        this.gravityScale = gravityScale
+        this.velocity = Vector2.zero
         this.isStatic = false
-    }
-
-    set velocity(v: Vector2) {
-        this._velocity = v
-    }
-
-    get velocity(): Vector2 {
-        return this._velocity
-    }
-
-    get gravityScale(): number {
-        return this._gravityScale
-    }
-
-    set gravityScale(v: number) {
-        this._gravityScale = v
     }
 
     public addForce(forceVector: Vector2, forceMode: ForceMode = ForceMode.Force): void {
         if (forceMode == ForceMode.Force) {
-            this._velocity = this._velocity.sub(forceVector)
+            this.velocity = this.velocity.sub(forceVector)
         } else if (forceMode == ForceMode.VelocityChange) {
-            this._velocity = new Vector2(forceVector.x, -forceVector.y)
+            this.velocity = new Vector2(forceVector.x, -forceVector.y)
         }
     }
 
     public update(): void {
-        if (this._gravityScale) {
-            this._velocity = this._velocity.add(new Vector2(0, this._gravityScale * GRAVITY_ACCELERATION).mul(Time.deltaTime))
+        if (this.gravityScale) {
+            this.velocity = this.velocity.add(new Vector2(0, this.gravityScale * GRAVITY_ACCELERATION).mul(Time.deltaTime))
         }
         if (this.velocity.magnitude > 0.5)
-            this._gameObject.transform.position = this._gameObject.transform.position.add(this._velocity.mul(Time.deltaTime * GRAVITY_ACCELERATION))
+            this.gameObject.transform.position = this.gameObject.transform.position.add(this.velocity.mul(Time.deltaTime * GRAVITY_ACCELERATION))
     }
 }

@@ -4,15 +4,15 @@ import { Component } from "./Component"
 
 export class Sprite extends Component {
     private _image: HTMLImageElement
-    private _order: number
+    public order: number
     public flipX: boolean
     public flipY: boolean
 
-    constructor(gameObject: GameObject, order: number) {
+    constructor(gameObject: GameObject, _order: number) {
         super(gameObject)
         this._image = new Image()
-        this._order = order
-        this._name = 'Sprite'
+        this.order = _order
+        this.name = 'Sprite'
         this.flipX = false
         this.flipY = false
 
@@ -22,8 +22,6 @@ export class Sprite extends Component {
     public setSprite(path: string) {
         this._image.src = path
     }
-
-    get order(): number { return this._order }
 
     get width(): number { return this._image.width }
 

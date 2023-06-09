@@ -18,7 +18,8 @@ export class Bird extends GameObject {
 
     constructor() {
         super()
-        GameManager.Instance().OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
+        GameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
+
         this.name = "Bird"
         this.jumpForce = 4.5
 
@@ -35,21 +36,21 @@ export class Bird extends GameObject {
         super.update()
 
         if (Input.getKeyDown('Space')) {
-            if (GameManager.Instance().getGameState() === 'Idle') {
+            if (GameManager.getGameState() === 'Idle') {
                 this.jump()
-                GameManager.Instance().updateGameState('Start')
-            } else if (GameManager.Instance().getGameState() === 'Start') {
+                GameManager.updateGameState('Start')
+            } else if (GameManager.getGameState() === 'Start') {
                 this.jump()
-            } else if (GameManager.Instance().getGameState() === 'GameOver') {
-                GameManager.Instance().updateGameState('Idle')
+            } else if (GameManager.getGameState() === 'GameOver') {
+                GameManager.updateGameState('Idle')
             }
         }
 
         if (Input.getMouseDown()) {
-            if (GameManager.Instance().getGameState() === 'Idle') {
+            if (GameManager.getGameState() === 'Idle') {
                 this.jump()
-                GameManager.Instance().updateGameState('Start')
-            } else if (GameManager.Instance().getGameState() === 'Start') {
+                GameManager.updateGameState('Start')
+            } else if (GameManager.getGameState() === 'Start') {
                 this.jump()
             }
         }
@@ -90,8 +91,8 @@ export class Bird extends GameObject {
     }
 
     public OnCollisionStay(collider: Collider): void {
-        if (GameManager.Instance().getGameState() == 'Start' && (collider.gameObject.name == "Ground" || collider.gameObject.name == "Pipe")) {
-            GameManager.Instance().updateGameState('GameOver')
+        if (GameManager.getGameState() == 'Start' && (collider.gameObject.name == "Ground" || collider.gameObject.name == "Pipe")) {
+            GameManager.updateGameState('GameOver')
         }
     }
 }

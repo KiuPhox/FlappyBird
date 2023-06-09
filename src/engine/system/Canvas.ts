@@ -45,13 +45,16 @@ export class Canvas {
                 Canvas.context.scale(1, -1)
             }
 
-            Canvas.context.drawImage(
-                sprite.image,
-                -spriteCenterX,
-                -spriteCenterY,
-                sprite.width * gameObject.transform.scale,
-                sprite.height * gameObject.transform.scale
-            )
+            if (sprite.image.complete && sprite.image.naturalWidth !== 0) {
+                Canvas.context.drawImage(
+                    sprite.image,
+                    -spriteCenterX,
+                    -spriteCenterY,
+                    sprite.width * gameObject.transform.scale,
+                    sprite.height * gameObject.transform.scale
+                )
+            }
+
 
             Canvas.context.restore()
         }

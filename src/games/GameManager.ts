@@ -2,24 +2,15 @@ import { GameState } from "../types/general"
 import { Event } from "../engine/event/Event"
 
 export class GameManager {
-    private gameState: GameState
-    private static instance: GameManager
+    private static  gameState: GameState
 
-    public OnGameStateChanged: Event<GameState>
+    public static OnGameStateChanged: Event<GameState>
 
-    constructor() {
+    public static init(){
         this.OnGameStateChanged = new Event<GameState>()
     }
 
-    public static Instance(): GameManager {
-        if (!GameManager.instance) {
-            GameManager.instance = new GameManager()
-        }
-
-        return GameManager.instance
-    }
-
-    public updateGameState(gameState: GameState): void {
+    public static updateGameState(gameState: GameState): void {
         this.gameState = gameState
 
         switch (this.gameState) {
@@ -33,7 +24,7 @@ export class GameManager {
         this.OnGameStateChanged.invoke(this.gameState)
     }
 
-    public getGameState(): GameState {
+    public static getGameState(): GameState {
         return this.gameState
     }
 }

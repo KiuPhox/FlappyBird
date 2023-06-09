@@ -3,14 +3,13 @@ import { GameObject } from "./GameObject"
 import { Vector2 } from "../utils/Vector2"
 
 export class ScoreManager {
-    private _score: number
-    private static instance: ScoreManager
-    private digits: GameObject[]
-    private sprites: Sprite[]
-    private highScore: number
+    private static score: number
+    private static digits: GameObject[]
+    private static sprites: Sprite[]
+    private static highScore: number
 
-    constructor(_score: number) {
-        this._score = _score
+    public static init(_score: number){
+        this.score = _score
         this.highScore = 0
 
         this.digits = Array.from({ length: 4 }, () => new GameObject())
@@ -31,38 +30,30 @@ export class ScoreManager {
 
         this.digits[2].transform.scale = 0.6
         this.digits[3].transform.scale = 0.6
-
     }
 
-    public reset(): void {
-        this._score = 0
+    public static reset(): void {
+        this.score = 0
         this.numberToDigits()
     }
 
-    public static Instance(): ScoreManager {
-        if (!ScoreManager.instance) {
-            ScoreManager.instance = new ScoreManager(0)
-        }
-        return ScoreManager.instance
-    }
-
-    public increaseScore(): void {
-        this._score++
-        if (this._score > this.highScore) {
-            this.highScore = this._score
+    public static increaseScore(): void {
+        this.score++
+        if (this.score > this.highScore) {
+            this.highScore = this.score
         }
         this.display()
     }
 
-    private display(): void {
+    private static display(): void {
         this.numberToDigits()
     }
 
-    private numberToDigits(): void {
-        this.sprites[1].setSprite(`/assets/images/${this._score % 10}.png`)
-        this.sprites[0].setSprite(`/assets/images/${Math.floor(this._score / 10)}.png`)
-        this.sprites[3].setSprite(`/assets/images/${this.highScore % 10}.png`)
-        this.sprites[2].setSprite(`/assets/images/${Math.floor(this.highScore / 10)}.png`)
+    private static numberToDigits(): void {
+        this.sprites[1].setSprite(`assets/images/${this.score % 10}.png`)
+        this.sprites[0].setSprite(`assets/images/${Math.floor(this.score / 10)}.png`)
+        this.sprites[3].setSprite(`assets/images/${this.highScore % 10}.png`)
+        this.sprites[2].setSprite(`assets/images/${Math.floor(this.highScore / 10)}.png`)
     }
 }
 
