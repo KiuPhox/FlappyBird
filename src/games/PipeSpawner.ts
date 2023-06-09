@@ -8,6 +8,8 @@ import { Node } from "../engine/system/Node"
 import { Canvas } from "../engine/system/Canvas"
 import { RigidBody } from "../engine/components/RigidBody"
 import { Sprite } from "../engine/components/Sprite"
+import { GameState } from "../types/general"
+import { GameManager } from "./GameManager"
 
 const PIPE_VELOCITTY = new Vector2(-1.7, 0)
 
@@ -38,6 +40,8 @@ export class PipeSpawner extends Node {
                 obj.setActive(false)
             }
         )
+
+        GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }
 
     public update() {
@@ -75,16 +79,33 @@ export class PipeSpawner extends Node {
     }
 
     private spawn(): void {
+        // Create pipe has up direction
         const pipeUp = this.pipePool.get()
         pipeUp.setActive(true)
         pipeUp.setIsCount(true);
         (pipeUp.getComponent('Sprite') as Sprite).flipY = false
         pipeUp.transform.position = new Vector2(this.spawnPos.x, Utils.Random(60, 220))
 
+        // Create pipe has down direction
         const pipeDown = this.pipePool.get()
         pipeDown.transform.position = new Vector2(this.spawnPos.x, pipeUp.transform.position.y - 430)
         pipeDown.setActive(true)
         pipeDown.setIsCount(false);
         (pipeDown.getComponent('Sprite') as Sprite).flipY = true
+    }
+
+    OnGameStateChanged = (gameState: GameState) => {
+        switch (gameState){
+            case 'Idle':
+                this.clear()
+                this.setActive(false)
+                break
+            case 'Start':
+                this.setIsSpawn(true)
+                break
+            case 'GameOver':
+                this.setIsSpawn(false)
+                break
+        }
     }
 }

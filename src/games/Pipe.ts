@@ -10,7 +10,7 @@ export class Pipe extends GameObject {
     private sprite: Sprite
 
     constructor() {
-        super()
+        super('Pipe')
         this.layer = "Background"
         this.name = "Pipe"
         this.transform.position = Vector2.zero

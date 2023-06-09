@@ -5,8 +5,8 @@ import { UIManager } from "./UIManager"
 export abstract class Button extends GameObject {
     private sprite: Sprite
 
-    constructor(src: string) {
-        super()
+    constructor(name: string, src: string) {
+        super(name)
         this.sprite = new Sprite(this, 0)
         this.sprite.setSprite(src)
         this.addComponent(this.sprite)

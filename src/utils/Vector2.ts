@@ -27,6 +27,10 @@ export class Vector2 {
         return new Vector2(0, 1)
     }
 
+    static get left(): Vector2{
+        return new Vector2(-1, 0)
+    }
+
     get x(): number { return this._x }
 
     get y(): number { return this._y }

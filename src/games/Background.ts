@@ -4,10 +4,9 @@ import { GameObject } from "./GameObject"
 
 export default class Background extends GameObject {
     private sprite: Sprite
-    private physic: RigidBody
 
     constructor() {
-        super()
+        super('Background')
         this.sprite = new Sprite(this, 3)
         this.sprite.setSprite("assets/images/background-day.png")
 

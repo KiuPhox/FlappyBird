@@ -17,11 +17,10 @@ export class Bird extends GameObject {
     private sprite: Sprite
 
     constructor() {
-        super()
+        super('Bird')
         GameManager.OnGameStateChanged.subscribe((gameState: GameState) => this.OnGameStateChanged(gameState))
-
-        this.name = "Bird"
-        this.jumpForce = 4.5
+        
+        this.jumpForce = 4.3
 
         this.rigidBody = new RigidBody(this, 0)
         this.sprite = new Sprite(this, 1)

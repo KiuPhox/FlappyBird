@@ -12,7 +12,7 @@ export class ScoreManager {
         this.score = _score
         this.highScore = 0
 
-        this.digits = Array.from({ length: 4 }, () => new GameObject())
+        this.digits = Array.from({ length: 4 }, () => new GameObject('ScoreDigit'))
         this.sprites = []
 
         for (let i = 0; i < this.digits.length; i++) {

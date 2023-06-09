@@ -5,9 +5,8 @@ import { GameObject } from "./GameObject"
 
 export class Ground extends GameObject {
     constructor() {
-        super()
+        super('Ground')
 
-        this.name = "Ground"
         this.layer = "Background"
 
         const sprite = new Sprite(this, 1)

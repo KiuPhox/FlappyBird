@@ -15,8 +15,8 @@ export class GameObject extends Node {
     private components: { [key: string]: Component }
     public layer: string
 
-    constructor() {
-        super('GameObject')
+    constructor(name: string) {
+        super(name)
         this.transform = {
             position: new Vector2(0, 0),
             rotation: 0,
