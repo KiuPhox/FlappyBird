@@ -7,13 +7,14 @@ import { RigidBody } from "./RigidBody"
 import { Sprite } from "./Sprite"
 
 export class Collider extends Component {
-    private isTrigger: boolean
-
+    public isTrigger: boolean
+    public scale: Vector2
     public OnCollisionStay: Event<Collider> = new Event<Collider>()
     public OnTriggerStay: Event<Collider> = new Event<Collider>()
 
     constructor(gameObject: GameObject) {
         super(gameObject)
+        this.scale = new Vector2(1, 1)
         this.isTrigger = false
         this.name = "Collider"
         Physic.registerCollider(this)
@@ -21,7 +22,7 @@ export class Collider extends Component {
 
     get size(): Vector2 {
         const sprite = this.gameObject.getComponent('Sprite') as Sprite
-        return new Vector2(sprite.width, sprite.height)
+        return new Vector2(sprite.width * this.scale.x, sprite.height * this.scale.y)
     }
 
     public update(): void {

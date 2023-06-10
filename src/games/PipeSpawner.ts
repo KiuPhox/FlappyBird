@@ -86,7 +86,7 @@ export class PipeSpawner extends GameObject {
         pipeUp.setActive(true)
         pipeUp.setIsCount(true);
         (pipeUp.getComponent('Sprite') as Sprite).flipY = false
-        pipeUp.transform.position = new Vector2(SPAWN_POSITION.x, Utils.Random(60, 220))
+        pipeUp.transform.position = new Vector2(SPAWN_POSITION.x, Utils.RandomFloat(60, 220))
 
         // Create pipe has down direction
         const pipeDown = this.pipePool.get()

@@ -7,6 +7,7 @@ export class Sprite extends Component {
     public order: number
     public flipX: boolean
     public flipY: boolean
+    public alpha: number
 
     constructor(gameObject: GameObject, _order: number) {
         super(gameObject)
@@ -15,6 +16,7 @@ export class Sprite extends Component {
         this.name = 'Sprite'
         this.flipX = false
         this.flipY = false
+        this.alpha = 1
 
         Canvas.registerSprite(this)
     }

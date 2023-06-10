@@ -1,6 +1,7 @@
 import { Sprite } from "../engine/components/Sprite"
 import { GameObject } from "../engine/system/GameObject"
 import { Vector2 } from "../engine/utils/Vector2"
+import { SoundManager } from "./SoundManager"
 
 export class ScoreManager {
     private static score: number
@@ -39,6 +40,7 @@ export class ScoreManager {
 
     public static increaseScore(): void {
         this.score++
+        SoundManager.playPointSound()
         if (this.score > this.highScore) {
             this.highScore = this.score
         }

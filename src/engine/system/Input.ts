@@ -1,5 +1,6 @@
 export class Input {
     private static previousKeyStates: Set<string> = new Set<string>()
+    private static heldKeyStates: Set<string> = new Set<string>()
     private static isHeld: boolean
     private static isMouseDown: boolean
 
@@ -17,12 +18,21 @@ export class Input {
         return this.previousKeyStates.has(keyCode)
     }
 
+    public static getKey(keyCode: string): boolean {
+        return this.heldKeyStates.has(keyCode)
+    }
+
     public static getMouseDown(): boolean {
         return this.isMouseDown
     }
 
     public static handleKeyDown(event: KeyboardEvent): void {
         const keyCode = event.code
+
+        if (!this.heldKeyStates.has(keyCode)) {
+            this.heldKeyStates.add(keyCode)
+        }
+
         if (!this.isHeld && !this.previousKeyStates.has(keyCode)) {
             this.isHeld = true
             this.previousKeyStates.add(keyCode)
@@ -32,10 +42,7 @@ export class Input {
     public static handleKeyUp(event: KeyboardEvent): void {
         const keyCode = event.code
         this.isHeld = false
-        if (this.previousKeyStates.has(keyCode)) {
-            console.log('delete')
-            this.previousKeyStates.delete(keyCode)
-        }
+        this.heldKeyStates.delete(keyCode)
     }
 
     public static handleMouseDown(): void {

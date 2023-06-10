@@ -33,7 +33,9 @@ export class Bird extends GameObject {
 
     public update(): void {
         super.update()
+
         if (Input.getKeyDown('Space')) {
+            console.log('a')
             const gameState = GameManager.getGameState()
 
             if (gameState === GameState.Ready) {

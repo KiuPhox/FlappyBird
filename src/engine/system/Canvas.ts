@@ -34,6 +34,7 @@ export class Canvas {
 
 
             Canvas.context.save()
+            Canvas.context.globalAlpha = sprite.alpha
             Canvas.context.translate(drawX, drawY)
             Canvas.context.rotate(gameObject.transform.rotation)
 

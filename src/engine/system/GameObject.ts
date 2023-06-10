@@ -2,6 +2,7 @@ import { Game } from "../../game"
 import { Collider } from "../components/Collider"
 import { Component } from "../components/Component"
 import { Transform } from "../components/Transform"
+import { Utils } from "../utils/Utils"
 
 
 
@@ -84,7 +85,7 @@ export class GameObject {
     public start(): void { /**/ }
     public onEnabled(): void { /**/ }
     public onDisabled(): void { /**/ }
-    public OnCollisionStay(collider: Collider): void {/**/}
-    public OnTriggerStay(collider: Collider): void {/**/}
+    public OnCollisionStay(collider: Collider): void { collider }
+    public OnTriggerStay(collider: Collider): void { collider }
 
 }
